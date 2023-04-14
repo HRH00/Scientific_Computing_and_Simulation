@@ -61,20 +61,31 @@ public class SimpleFT {
                         sumIm += sin * CRe[k][l] + cos * CIm[k][l];
                     }
                 }
-                sum = (sumRe-sumIm) / (N*N) ;// used for pixel normalisation
+                sum = Math.round((sumRe-sumIm) / (N*N));// used for pixel normalisation, rounded to eliminate floating point error
                 reconstructed[m][n] = sum;
             }
             System.out.println("Completed inverse FT line " + (m+1)+ " out of " + N);
             
-            
-            
-        }
-        System.out.println("Original\t|\tReconstructed");
-        for (int x = 0; x < 100;x++){
-            for (int y = 0; y < 100; y++)
-            System.out.println(X[x][y]+"\t|\t"+ reconstructed[x][y]);
-        }
+       }
         DisplayDensity display3 = new DisplayDensity(reconstructed, N, "Reconstructed Image") ;
+
+
+         //Outputs the pixel values of the original image and reconstructed image
+        boolean floatingPointErrorPresent = false;
+        System.out.println("Original\t|\tReconstructed");
+        for (int x = 0; x < N; x++){
+            for (int y = 0; y < N; y++)
+
+            if (X[x][y]!=reconstructed[x][y]){ //if the reconstruct and original values dont match
+                System.out.println(X[x][y]+"\t\t|\t"+ reconstructed[x][y]); //print those values
+                floatingPointErrorPresent = true;  //set errorBool to true
+            
+            }
+        }
+        //print the error boolean
+        System.out.println("Error in Reconstruction:\t"+floatingPointErrorPresent);
+
+
 
     }
 }
