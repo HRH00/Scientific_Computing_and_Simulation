@@ -1,4 +1,4 @@
-public class SimpleFTFilters {
+public class HighAndLowFilter {
   
     public static int N = 256 ;
 
@@ -37,8 +37,6 @@ public class SimpleFTFilters {
             System.out.println("Initial FT |\t" + "Completed FT line " + (k + 1) + " out of " + N) ;
         }
 
-        Display2dFT display2 = new Display2dFT(CRe, CIm, N, "Discrete FT") ;
-        reconstructFT(CRe, CIm, N, "Initial FT");
 
 //////////////   initial End //////////////////////////
 
@@ -46,9 +44,7 @@ public class SimpleFTFilters {
 
 
 ////////////////       Start Low Pass Filter      ///////////////////////////
-        //copy contents of Arrays to new varible 
-        double [][] CReLowPassFilter = cloneArray(CRe, N);
-        double [][] CImLowPassFilter = cloneArray(CIm, N);
+
       
         int cutoff = N/8 ;  // for example
         for(int k = 0 ; k < N ; k++) {
@@ -56,18 +52,13 @@ public class SimpleFTFilters {
             for(int l = 0 ; l < N ; l++) {
                 int lSigned = l <= N/2 ? l : l - N ;
                 if(Math.abs(kSigned) > cutoff || Math.abs(lSigned) > cutoff) {
-                    CReLowPassFilter [k] [l] = 0 ;
-                    CImLowPassFilter [k] [l] = 0 ;
+                    CRe [k] [l] = 0 ;
+                    CIm [k] [l] = 0 ;
                 }
             }
         }
-        Display2dFT displayLowPassFilter = new Display2dFT(
-            CReLowPassFilter,
-            CImLowPassFilter,
-            N,
-            "Low Pass Truncated FT");
 
-        reconstructFT(CReLowPassFilter,CImLowPassFilter,N,"Low Pass");
+
 ////////////////       End Low Pass Filter      ///////////////////////////
 
 
@@ -77,8 +68,7 @@ public class SimpleFTFilters {
 
 ////////////////       Start High Pass Filter      ///////////////////////////
     //copy contents of Arrays to new varible 
-        double [][] CReHighPassFilter = cloneArray(CRe, N);
-        double [][] CImHighPassFilter = cloneArray(CIm, N);   
+ 
         
         cutoff = N/128;  // for example
         for(int k = 0 ; k < N ; k++) {
@@ -86,22 +76,23 @@ public class SimpleFTFilters {
             for(int l = 0 ; l < N ; l++) {
                 int lSigned = l <= N/2 ? l : l - N ;
                 if(Math.abs(kSigned) <= cutoff || Math.abs(lSigned) <= cutoff) {
-                    CReHighPassFilter [k] [l] = 0 ;
-                    CImHighPassFilter [k] [l] = 0 ;
+                    CRe [k] [l] = 0 ;
+                    CIm [k] [l] = 0 ;
                 }
             }
         }
 
         // Output Images
         Display2dFT displayHighPassFilter = new Display2dFT(
-            CReHighPassFilter,
-            CImHighPassFilter,
+            CRe,
+            CIm,
             N,
             "High Pass Truncated FT");
 
-        reconstructFT(CReHighPassFilter, CImHighPassFilter, N, "High Pass");
+        reconstructFT(CRe, CIm, N, "Filtered Image");
 
 ////////////////       End High Pass Filter      ///////////////////////////
+
 ////////////////           End Main             ///////////////////////////
 
 }
@@ -132,14 +123,4 @@ public class SimpleFTFilters {
 
     }
 
-    // A function to copy the contents of the Arrays without altering the original reference
-    public static double [][] cloneArray(double [][] startArray, int N){
-        double [][] copiedArray  = new double[N][N];        
-        for (int i = 0; i < N; i++){
-            for (int y = 0; y < N; y++){
-                copiedArray[i][y] = startArray[i][y];
-            }
-        }
-        return copiedArray;
-    }
 }
