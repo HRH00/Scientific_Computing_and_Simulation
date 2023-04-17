@@ -38,13 +38,14 @@ public class SimpleFTFilters {
         }
 
         Display2dFT display2 = new Display2dFT(CRe, CIm, N, "Discrete FT") ;
-        reconstructFT(CRe, CIm, N, "Original Image");
+        reconstructFT(CRe, CIm, N, "Reconstruct - Initial FT");
 
 
 
 
 ////////////////       Start Low Pass Filter      ///////////////////////////
-        //copy contents of Arrays tone varible 
+
+        //copy contents of Arrays to new varible 
         double [][] CReLowPassFilter = cloneArray(CRe, N);
         double [][] CImLowPassFilter = cloneArray(CIm, N);
 
@@ -61,7 +62,6 @@ public class SimpleFTFilters {
             }
         }
 
-        // Output images
         Display2dFT displayLowPassFilter = new Display2dFT(CReLowPassFilter, CImLowPassFilter, N, "Low Pass Truncated FT") ;
         reconstructFT(CReLowPassFilter,CImLowPassFilter,N,"Low Pass Image");
 
@@ -71,7 +71,7 @@ public class SimpleFTFilters {
 
 ////////////////       Start High Pass Filter      ///////////////////////////
 
-//copy contents of Arrays tone varible 
+    //copy contents of Arrays to new varible 
         double [][] CReHighPassFilter = cloneArray(CRe, N);
         double [][] CImHighPassFilter = cloneArray(CIm, N);   
         
@@ -92,6 +92,7 @@ public class SimpleFTFilters {
         reconstructFT(CReHighPassFilter,CImHighPassFilter,N,"High Pass Image");
 
 ////////////////       End Low Pass Filter      ///////////////////////////
+////////////////           End Main             ///////////////////////////
 
 }
 
@@ -100,8 +101,8 @@ public class SimpleFTFilters {
 
 
 
-// Helper Functions
-   public static void reconstructFT(double [][] CRe, double [][] CIm, int N, String title){
+    // Helper Functions - Performs inverse FT to reconsruct images
+    public static void reconstructFT(double [][] CRe, double [][] CIm, int N, String title){
         double [] [] reconstructed = new double [N] [N] ;
         for (int m = 0; m <  N; m++) {
             for (int n = 0; n < N; n++) {
@@ -122,16 +123,14 @@ public class SimpleFTFilters {
             }
             System.out.println("Completed inverse FT line " + (m+1)+ " out of " + N);
             
-       }
+        }
         DisplayDensity displayLowPass = new DisplayDensity(reconstructed, N, title) ;
 
     }
 
     // A function to copy the contents of the Arrays
     public static double [][] cloneArray(double [][] startArray, int N){
-
-        double [][] copiedArray  = new double[N][N];
-        
+        double [][] copiedArray  = new double[N][N];        
         for (int i = 0; i < N; i++){
             for (int y = 0; y < N; y++){
                 copiedArray[i][y] = startArray[i][y];
