@@ -9,7 +9,7 @@ public class HighAndLowFilter {
 
         ReadPGM.read(X,FileName,N) ;
 
-        DisplayDensity display = new DisplayDensity(X, N, "Original Image") ;
+        new DisplayDensity(X, N, "Original Image") ;
 
         double [] [] CRe = new double [N] [N];
         double [] []CIm = new double [N] [N] ;
@@ -83,11 +83,11 @@ public class HighAndLowFilter {
         }
 
         // Output Images
-        Display2dFT displayHighPassFilter = new Display2dFT(
+        new Display2dFT(
             CRe,
             CIm,
             N,
-            "High Pass Truncated FT");
+            "Truncated FT");
 
         reconstructFT(CRe, CIm, N, "Filtered Image");
 
@@ -119,7 +119,7 @@ public class HighAndLowFilter {
             System.out.println(title + " Reconstruct |\t" + "Completed inverse FT line " + (m+1)+ " out of " + N);
             
         }
-        DisplayDensity displayLowPass = new DisplayDensity(reconstructed, N, (title+" Reconstruct")) ;
+        new DisplayDensity(reconstructed, N, (title+" Reconstruct")) ;
 
     }
 
