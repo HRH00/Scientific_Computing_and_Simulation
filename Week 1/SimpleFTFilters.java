@@ -9,7 +9,7 @@ public class SimpleFTFilters {
 
         ReadPGM.read(X,FileName,N) ;
 
-        DisplayDensity display = new DisplayDensity(X, N, "Original Image") ;
+        new DisplayDensity(X, N, "Original Image") ;
 
         double [] [] CRe = new double [N] [N];
         double [] []CIm = new double [N] [N] ;
@@ -37,7 +37,7 @@ public class SimpleFTFilters {
             System.out.println("Initial FT |\t" + "Completed FT line " + (k + 1) + " out of " + N) ;
         }
 
-        Display2dFT display2 = new Display2dFT(CRe, CIm, N, "Discrete FT") ;
+        new Display2dFT(CRe, CIm, N, "Discrete FT") ;
         reconstructFT(CRe, CIm, N, "Initial FT");
 
 //////////////   initial End //////////////////////////
@@ -61,7 +61,7 @@ public class SimpleFTFilters {
                 }
             }
         }
-        Display2dFT displayLowPassFilter = new Display2dFT(
+        new Display2dFT(
             CReLowPassFilter,
             CImLowPassFilter,
             N,
@@ -93,7 +93,7 @@ public class SimpleFTFilters {
         }
 
         // Output Images
-        Display2dFT displayHighPassFilter = new Display2dFT(
+        new Display2dFT(
             CReHighPassFilter,
             CImHighPassFilter,
             N,
@@ -128,7 +128,7 @@ public class SimpleFTFilters {
             System.out.println(title + " Reconstruct |\t" + "Completed inverse FT line " + (m+1)+ " out of " + N);
             
         }
-        DisplayDensity displayLowPass = new DisplayDensity(reconstructed, N, (title+" Reconstruct")) ;
+        new DisplayDensity(reconstructed, N, (title+" Reconstruct")) ;
 
     }
 

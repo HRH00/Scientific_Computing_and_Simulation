@@ -15,7 +15,7 @@ public class ReadPGM {
         double [] [] density = new double [N] [N] ;
         read(density, fileName, N) ;
 
-        DisplayDensity display = new DisplayDensity(density, N, fileName) ;
+        new DisplayDensity(density, N, fileName) ;
     }
 
     static double read(double [] [] density, String fileName, int n) 

@@ -12,7 +12,7 @@ public class SimpleFT {
 
         ReadPGM.read(X,FileName,N) ;
 
-        DisplayDensity display = new DisplayDensity(X, N, "Original Image") ;
+        new DisplayDensity(X, N, "Original Image") ;
 
         double [] [] CRe = new double [N] [N];
         double [] []CIm = new double [N] [N] ;
@@ -40,8 +40,7 @@ public class SimpleFT {
             System.out.println("Completed FT line " + (k + 1) + " out of " + N) ;
         }
 
-
-        Display2dFT display2 = new Display2dFT(CRe, CIm, N, "Discrete FT") ;
+        new Display2dFT(CRe, CIm, N, "Discrete FT") ;
 
 
         double [] [] reconstructed = new double [N] [N] ;
@@ -67,7 +66,7 @@ public class SimpleFT {
             System.out.println("Completed inverse FT line " + (m+1)+ " out of " + N);
             
        }
-        DisplayDensity display3 = new DisplayDensity(reconstructed, N, "Reconstructed Image") ;
+        new DisplayDensity(reconstructed, N, "Reconstructed Image") ;
 
 
          //Outputs the pixel values of the original image and reconstructed image
