@@ -46,6 +46,7 @@ public class FFTImage {
         //output results
         System.out.println("Calculation completed in " +
                            (endTime - startTime) + " milliseconds");                    
+                           
     }
 
 
@@ -88,24 +89,5 @@ public class FFTImage {
             }
         }
     }
-
-        // Function to compare 2D double arrays
-        public static boolean compare2DArrays(double[][] array1, double[][] array2) {
-            // Check if the arrays have the same number of rows and columns
-            if (array1.length != array2.length || array1[0].length != array2[0].length) {
-                return false;
-            }
-    
-            // Iterate through each element and compare their values
-            for (int i = 0; i < array1.length; i++) {
-                for (int j = 0; j < array1[0].length; j++) {
-                    if (array1[i][j] != array2[i][j]) {
-                        return false;
-                    }
-                }
-            }
-    
-            return true; // Arrays are equal
-        }
 
 }
