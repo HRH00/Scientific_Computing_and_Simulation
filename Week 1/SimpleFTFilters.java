@@ -4,12 +4,18 @@ public class SimpleFTFilters {
 
     public static void main(String [] args) throws Exception {    
 
+        //start benchmarking 
+        long startTime = System.currentTimeMillis();
+
+
         double [] [] X = new double [N] [N] ;
         String FileName = "Week 1/wolf.pgm";
 
         ReadPGM.read(X,FileName,N) ;
 
         new DisplayDensity(X, N, "Original Image") ;
+
+
 
         double [] [] CRe = new double [N] [N];
         double [] []CIm = new double [N] [N] ;
@@ -34,7 +40,7 @@ public class SimpleFTFilters {
                 CIm [k] [l] = sumIm ;
    
             }
-            System.out.println("Initial FT |\t" + "Completed FT line " + (k + 1) + " out of " + N) ;
+         //   System.out.println("Initial FT |\t" + "Completed FT line " + (k + 1) + " out of " + N) ;
         }
 
         new Display2dFT(CRe, CIm, N, "Discrete FT") ;
@@ -104,6 +110,12 @@ public class SimpleFTFilters {
 ////////////////       End High Pass Filter      ///////////////////////////
 ////////////////           End Main             ///////////////////////////
 
+     
+        long endTime = System.currentTimeMillis();
+
+        System.out.println("Calculation completed in " +
+                        (endTime - startTime) + " milliseconds");  
+
 }
     // Helper Functions - Performs inverse FT to reconsruct images
     public static void reconstructFT(double [][] CRe, double [][] CIm, int N, String title){
@@ -125,7 +137,7 @@ public class SimpleFTFilters {
                 sum =(sumRe-sumIm) / (N*N);
                 reconstructed[m][n] = sum;
             }
-            System.out.println(title + " Reconstruct |\t" + "Completed inverse FT line " + (m+1)+ " out of " + N);
+           // System.out.println(title + " Reconstruct |\t" + "Completed inverse FT line " + (m+1)+ " out of " + N);
             
         }
         new DisplayDensity(reconstructed, N, (title+" Reconstruct")) ;

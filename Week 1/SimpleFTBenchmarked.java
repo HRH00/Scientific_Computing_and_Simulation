@@ -4,6 +4,8 @@ public class SimpleFTBenchmarked {
 
     public static void main(String [] args) throws Exception {
 
+        //start benchmarking 
+        long startTime = System.currentTimeMillis();
 
         
 
@@ -14,8 +16,6 @@ public class SimpleFTBenchmarked {
 
         new DisplayDensity(X, N, "Original Image") ;
 
-        //start benchmarking 
-        long startTime = System.currentTimeMillis();
 
 
 
@@ -42,7 +42,7 @@ public class SimpleFTBenchmarked {
    
             }
 
-            System.out.println("Completed FT line " + (k + 1) + " out of " + N) ;
+         //   System.out.println("Completed FT line " + (k + 1) + " out of " + N) ;
         }
 
         new Display2dFT(CRe, CIm, N, "Discrete FT") ;
@@ -68,7 +68,7 @@ public class SimpleFTBenchmarked {
                 sum = (sumRe-sumIm) / (N*N);
                 reconstructed[m][n] = sum;
             }
-            System.out.println("Completed inverse FT line " + (m+1)+ " out of " + N);
+        //    System.out.println("Completed inverse FT line " + (m+1)+ " out of " + N);
             
        }
         new DisplayDensity(reconstructed, N, "Reconstructed Image") ;
@@ -80,6 +80,7 @@ public class SimpleFTBenchmarked {
         System.out.println("Calculation completed in " +
                            (endTime - startTime) + " milliseconds");  
     }
+    
         
 
 

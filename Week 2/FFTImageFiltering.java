@@ -1,6 +1,6 @@
 public class FFTImageFiltering {
 
-    public static int N = 256 ;
+    public static int N = 600 ;
 
     public static void main(String [] args) throws Exception {
 
@@ -9,7 +9,7 @@ public class FFTImageFiltering {
 
 
         double [] [] X = new double [N] [N] ;
-        ReadPGM.read(X, "Week 1/wolf.pgm", N) ;
+        ReadPGM.read(X, "Week 1/apollonian_gasket.ascii.pgm", N) ;
 
         new DisplayDensity(X, N, "Original Image") ;
 
@@ -97,33 +97,6 @@ public class FFTImageFiltering {
     new DisplayDensity(CReHighPassFilter,N,"High Pass Recon");
 ////////////////       End High Pass Filter      ///////////////////////////
 
-
-        
-
-
-
-
-
-        
-
-
-        
-
-
-
-
-        
-
-
-
-
-
-
-
-
-
-
-
         //end benchmarking
         long endTime = System.currentTimeMillis();
         //output results
@@ -185,9 +158,6 @@ public class FFTImageFiltering {
             }
         }
     }
-    
-    
-    
     
     
     
