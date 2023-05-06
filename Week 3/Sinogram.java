@@ -66,13 +66,11 @@ public class Sinogram {
         double normDensity = norm1(sinogram [0]) ;
 
 
-        // ... Insert sinogram filtering code here! ...
-
         double [] [] sinogramFTRe = new double [N] [N],
         sinogramFTIm = new double [N] [N] ;
         for(int iTheta = 0 ; iTheta < N ; iTheta++) {
             for(int iR = 0 ; iR < N ; iR++) {
-            sinogramFTRe [iTheta] [iR] = sinogram [iTheta] [iR] ;
+             sinogramFTRe [iTheta] [iR] = sinogram [iTheta] [iR] ;
             }
         }
 
@@ -84,9 +82,44 @@ public class Sinogram {
         new DisplaySinogramFT(sinogramFTRe, sinogramFTIm, N,
                                 "Sinogram radial Fourier Transform") ;
 
+        //Ram Lak   
+        int CUTOFF = N;
+
+        for(int iTheta = 0 ; iTheta < N ; iTheta++) {
+            for(int iK = 0 ; iK < N ; iK++) {
+                int kSigned = iK <= N/2 ? iK : iK - N ;
+
+
+               if (kSigned >= CUTOFF){
+                   
+                   System.out.println("Cutoff ");
+                   kSigned=0;
+               } //Cuttoff
+               
+                sinogramFTRe[iTheta][iK] *= Math.abs(kSigned);
+                sinogramFTIm[iTheta][iK] *= Math.abs(kSigned);
+                
+            }
+        }
+
+        //inverse FFT
+        for(int iTheta = 0 ; iTheta < N ; iTheta++) {
+            FFT.fft1d(sinogramFTRe[iTheta],sinogramFTIm[iTheta], -1);
+        }
+
+
+        DisplayDensity display4 =
+                new DisplayDensity(sinogramFTRe, N, "Filtered sinogram") ;
 
         double [] [] backProjection = new double [N] [N] ;
-        backProject(backProjection, sinogram) ;
+
+
+
+
+
+
+
+        backProject(backProjection, sinogramFTRe) ;
 
         // Normalize reconstruction, to have same sum as inferred for
         // original density
@@ -97,10 +130,17 @@ public class Sinogram {
                 backProjection [i] [j] *= factor ;
             }
         }
-
         DisplayDensity display5 =
                 new DisplayDensity(backProjection, N,
-                                   "Back projected sinogram") ;
+                                   "Back projected sinogram",
+                                   GREY_SCALE_LO, GREY_SCALE_HI) ;
+
+
+
+
+
+
+
     }
 
     static void backProject(double [] [] projection, double [] [] sinogram) {
@@ -249,4 +289,3 @@ public class Sinogram {
     }
 
 }
-

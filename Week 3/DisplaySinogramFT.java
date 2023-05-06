@@ -8,12 +8,14 @@ public class DisplaySinogramFT extends JPanel {
 
     public static int CELL_SIZE = 1 ;
 
-    int n ;
+    int n;
 
     double [] [] ftRe, ftIm ;
 
     DisplaySinogramFT(double [] [] ftRe, double [] [] ftIm,
                       int n, String title) {
+
+        this.n = n ;
 
         setPreferredSize(new Dimension(CELL_SIZE * n, CELL_SIZE * n)) ;
 
@@ -32,7 +34,7 @@ public class DisplaySinogramFT extends JPanel {
            }
         }
 
-        this.n = n ;
+        // this.n = n ;
 
         repaint() ;
     }
@@ -40,7 +42,6 @@ public class DisplaySinogramFT extends JPanel {
     public void paintComponent(Graphics g) {
 
         double [] mods = new double [n * n] ;
-        
         for(int i = 0 ; i < n ; i++) {
             for(int j = 0 ; j < n ; j++) {
                 mods [n * i + j] = mod(ftRe [i] [j], ftIm [i] [j]) ;
@@ -93,8 +94,8 @@ public class DisplaySinogramFT extends JPanel {
         double mul, con ;  // "m" and "c" parameters in linear plot
     
         Intensity(double [] mods) {
+    
             int n = mods.length ;
-            System.out.println("Length of mods = " + n);
     
             Arrays.sort(mods, 0, n) ;
     
