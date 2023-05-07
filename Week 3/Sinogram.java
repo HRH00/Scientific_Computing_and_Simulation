@@ -83,24 +83,41 @@ public class Sinogram {
                                 "Sinogram radial Fourier Transform") ;
 
         //Ram Lak   
-        int CUTOFF = N;
+        int CUTOFF = N/8
+        ;
 
+//        for(int iTheta = 0 ; iTheta < N ; iTheta++) {
+//            for(int iK = 0 ; iK < N ; iK++) {
+//                double kSigned = iK <= N/2 ? iK : iK - N ;
+//
+//                if (Math.abs(kSigned) >= CUTOFF){
+//                    sinogramFTRe[iTheta][iK] = 0;
+//                    sinogramFTIm[iTheta][iK] = 0;
+//                } //Cuttoff
+//                else{
+//                    sinogramFTRe[iTheta][iK] *= Math.abs(kSigned);
+//                    sinogramFTIm[iTheta][iK] *= Math.abs(kSigned);
+//                }
+//            }
+//        }
+
+        
         for(int iTheta = 0 ; iTheta < N ; iTheta++) {
             for(int iK = 0 ; iK < N ; iK++) {
-                int kSigned = iK <= N/2 ? iK : iK - N ;
+                double kSigned = Math.abs(iK) * Math.cos(Math.PI * iK /(2 * CUTOFF));
 
 
-               if (kSigned >= CUTOFF){
-                   
-                   System.out.println("Cutoff ");
-                   kSigned=0;
-               } //Cuttoff
-               
-                sinogramFTRe[iTheta][iK] *= Math.abs(kSigned);
-                sinogramFTIm[iTheta][iK] *= Math.abs(kSigned);
-                
+                if (Math.abs(kSigned) >= CUTOFF){
+                    sinogramFTRe[iTheta][iK] = 0;
+                    sinogramFTIm[iTheta][iK] = 0;
+                } //Cuttoff
+                else{
+                    sinogramFTRe[iTheta][iK] *= Math.abs(kSigned);
+                    sinogramFTIm[iTheta][iK] *= Math.abs(kSigned);
+                }
             }
         }
+
 
         //inverse FFT
         for(int iTheta = 0 ; iTheta < N ; iTheta++) {
@@ -132,7 +149,7 @@ public class Sinogram {
         }
         DisplayDensity display5 =
                 new DisplayDensity(backProjection, N,
-                                   "Back projected sinogram",
+                                   "Back projected cosine Filter",
                                    GREY_SCALE_LO, GREY_SCALE_HI) ;
 
 

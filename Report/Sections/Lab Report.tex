@@ -249,7 +249,7 @@ The initial source model is the 'Shepp Logan Phantom' \textcite{6499235}, which 
 
 
 \subsection{Applying an FFT}
-Filtering the sinogram is required to make details more visible in the back-projected image. Initially, a complex FFT is performed over \(\theta\) on the sinogram, the graphical output of this FFT is shown in \autoref{fig:W3-initial-FT}. Code for this is shown in \autoref{fig:W3-initial-FT-code}
+Filtering the sinogram is required to make details more visible in the back-projected image. In order to perform filtering, a complex FFT is performed over \(\theta\) on the sinogram, the graphical output of this FFT is shown in \autoref{fig:W3-initial-FT}. Implementation code is shown in \autoref{fig:W3-initial-FT-code}.
 
 \begin{figure}[H] 
     \centering
@@ -267,10 +267,10 @@ Filtering the sinogram is required to make details more visible in the back-proj
 
 
 
-\subsection{Applying the Ramp Filter}
-Next, the filter must be applied to the FT. A simple Ramp filter has been implemented. A ramp filter is a type of high-pass filter which reduces low frequencies to decrease blurring. The code performing this is shown in \autoref{fig:W3-ramp-code}. For each element, the code generates a |K| value which is multiplied to both the real and imaginary numerical values of the Fourier Transform.
+\subsection{Applying a Simple Ramp Filter}
+Next, the filter must be applied to the Fourier Transform data. A simple Ramp filter has been implemented. A ramp filter is a type of high-pass filter which reduces low frequencies to decrease blurring. The code performing this is shown in \autoref{fig:W3-ramp-code}. For each element, the code generates a $|K|$ value which is then multiplied to both the real and imaginary numerical components of the Fourier Transform.
 
-The value of 'kSigned' is set to 'iK' if the value is <= N/2, otherwise, the value is set to iK-N.   
+The value of 'kSigned' is set to 'iK' if the value is $iK <= N/2$, otherwise, the value is set to $iK-N$.   
 \begin{figure}[H] 
     \centering
     \includegraphics[width=0.9\columnwidth]{Figures/Week 3/ramp-filter-code.png}
@@ -295,8 +295,8 @@ The filtered sinogram is shown in \autoref{fig:W3-filtered-sin}.
     \label{fig:W3-filtered-sin}
 \end{figure}
 
-To output the filtered back-projected image, a back-projection operation is performed on the sinogram before the values are normalised. The new image is then drawn. This is shown in \autoref{fig:W3-filtered-back-image}
-
+To output the filtered back-projected image, a back-projection operation is performed on the sinogram before the values are normalised. The new image is then drawn. This is shown in \autoref{fig:W3-filtered-back-image}. More detail is visible in the back-projected image, however, a lot of noise has been introduced. To reduce this noise, further filtering is required.
+    
 \begin{figure}[H] 
     \centering
     \includegraphics[width=1\columnwidth]{Figures/Week 3/filtered-back-projection.png}
@@ -305,9 +305,57 @@ To output the filtered back-projected image, a back-projection operation is perf
 \end{figure}
 
 
-\subsection{Applying Ram Lack Filter}
+\subsection{Applying a Ramp Filter with Cutoffs}
+The previous filter was altered to make use of a cutoff value, an integer variable 'CUTOFF' was created. This stores the value of: '$N / Value$'. If the '$|K|$' value is greater than this CutOff, the Fourier Component is set to '0'. The code for this implementation is shown in \autoref{fig:W3-filter-with-cutoff-code}.
+
+\begin{figure}[H] 
+    \centering
+    \includegraphics[width=1\columnwidth]{Figures/Week 3/Filter-with-cuttoff-code.png}
+    \caption{Screenshot of the Java code performing filtering with cutoff value}
+    \label{fig:W3-filter-with-cutoff-code}
+\end{figure}
+
+
+The program was run with $N/4$ and $N/16$, the back-projected images do have slightly reduced noise. \autoref{fig:W3-many-filters} shows the back-projected images made using a Ramp filter with no CUTOFF (left), with CUTOFF=N/4 (centre) and CUTOFF=N/16 (right).  
+
+
+
+\begin{figure}[H] 
+    \centering
+    \includegraphics[width=1\columnwidth]{Figures/Week 3/filtered-images-ramp-N-4-N-16.png}
+    \caption{Screenshot of back project images with filters applied}
+    \label{fig:W3-many-filters}
+\end{figure}
+
+
+\newpage
 \subsection{Applying Low Pass Cosine Filter}
 
+Next, a low-pass Cosine Filter was applied. The filter takes a similar approach to the previous high pass filter but applies: $|K|$  $cos(\pi K /(2  *  CUTOFF))$.
+
+Implementation is shown in \autoref{fig:W3-cos-filter-code}. 
+
+\begin{figure}[H] 
+    \centering
+    \includegraphics[width=1\columnwidth]{Figures/Week 3/filter-cos-codfe.png}
+    \caption{Screenshot of the cosine filter code}
+    \label{fig:W3-cos-filter-code}
+\end{figure}
+
+\autoref{fig:W3-cos-filter-image} shows the image when CUTOFF=$N/4$. The image has little noise removed,
+\autoref{fig:W3-cos-filter-image-n-8} shows the image when CUTOFF=$N/8$, the image is now missing a lot of detail compared to the results of the standard ramp filter. 
+\begin{figure}[H] 
+    \centering
+    \includegraphics[width=0.49\columnwidth]{Figures/Week 3/filter-cos-image.png}
+    \caption{Screenshot of the cosine filter image Cutoff=N/4}
+    \label{fig:W3-cos-filter-image}
+\end{figure}
+\begin{figure}[H] 
+    \centering
+    \includegraphics[width=0.49\columnwidth]{Figures/Week 3/filter-cos-image-N-8.png}
+    \caption{Screenshot of the cosine filter image Cutoff=N/8}
+    \label{fig:W3-cos-filter-image-n-8}
+\end{figure}
 
 
 \section{Week 4}
