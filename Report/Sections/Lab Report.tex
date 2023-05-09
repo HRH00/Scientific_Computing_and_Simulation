@@ -1,5 +1,5 @@
 \chapter{Lab Report}
-\section{Week 1 Naive Fourier Transform}
+\section{Lab 1 Naive Fourier Transform}
     This week comprised of performing a Fourier Transform and Inverse Fourier Transform on a .pgm image file. The original image is of a wolf shown in Figure \autoref{fig:wolf_image}
 
     Supporting Java classes were provided, these include Display2dFT.java, DisplayDensity.java, ReadPGM.java and SimpleFT a skeleton program to code in.
@@ -168,7 +168,7 @@
 
 
 
-\section{Week 2 - Fast Fourier Transform}
+\section{Lab 2 - Fast Fourier Transform}
 This week a Fast Fourier Transform was implemented and benchmarked. Each program was run three times to compare processing speeds. 
 
 \subsection{2D FFT Implementation}
@@ -233,9 +233,9 @@ Benchmarking code was added to the FT and FFT programs to compare run times. Eac
     \end{figure}
         
 
-\section{Week 3 - CT Scanner}
+\section{Lab 3 - CT Scanner}
 
-This week two classes were supplied, DisplaySinogramFT.java outputted the SinogramFT as an image and Sinogram.java contained boilerplate code which includes the initial body slice model. It outputs the initial model and calculated sinogram before outputting a back-projected sinogram. The back-projected image contains very little detail, this is shown on the right side of \autoref{fig:W3-initial-output}.
+This lab two classes were supplied, DisplaySinogramFT.java outputted the SinogramFT as an image and Sinogram.java contained boilerplate code which includes the initial body slice model. It outputs the initial model and calculated sinogram before outputting a back-projected sinogram. The back-projected image contains very little detail, this is shown on the right side of \autoref{fig:W3-initial-output}.
 
 The initial source model is the 'Shepp Logan Phantom' \textcite{6499235}, which is made of a series of ellipses representing different densities. The class performs an integral Radon Transform on the model densities to produce the Sinogram, the inversion of this transform will produce the final image. 
 
@@ -331,7 +331,7 @@ The program was run with $N/4$ and $N/16$, the back-projected images do have sli
 \newpage
 \subsection{Applying Low Pass Cosine Filter}
 
-Next, a low-pass Cosine Filter was applied. The filter takes a similar approach to the previous high pass filter but applies: $|K|$  $cos(\pi K /(2  *  CUTOFF))$.
+Next, a low-pass Cosine Filter was applied. The filter takes a similar approach to the previous high-pass filter but applies the following equation. \(|K|  cos(\pi K /(2  *  CUTOFF))\).
 
 Implementation is shown in \autoref{fig:W3-cos-filter-code}. 
 
@@ -358,11 +358,14 @@ Implementation is shown in \autoref{fig:W3-cos-filter-code}.
 \end{figure}
 
 
-\section{Week 4}
-\section{Week 5}
-\section{Week 6}
-\section{Week 7}
-\section{Week 8}
-\section{Week 9}
-\section{Week 10}
-\section{Week 11}
+\section{Lab 4 - Radio Interferometry}
+
+
+\section{Lab 5 Lattice gas models}
+This 
+\section{Lab 6}
+\section{Lab 7}
+\section{Lab 8}
+\section{Lab 9}
+\section{Lab 10}
+\section{Lab 11}

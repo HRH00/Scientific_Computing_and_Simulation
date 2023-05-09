@@ -1,10 +1,4 @@
 
-import java.util.Arrays ;
-
-import java.awt.* ;
-import javax.swing.* ;
-
-
 public class Sinogram {
 
     static final int N = 512 ;
@@ -33,8 +27,7 @@ public class Sinogram {
             }
         } 
 
-        DisplayDensity display1 =
-                new DisplayDensity(density, N, "Source Model",
+        new DisplayDensity(density, N, "Source Model",
                                    GREY_SCALE_LO, GREY_SCALE_HI) ;
 
         // Radon tranform of density (as measured by detectors):
@@ -58,7 +51,7 @@ public class Sinogram {
             }
         }
 
-        DisplayDensity display2 = new DisplayDensity(sinogram, N, "Sinogram") ;
+         new DisplayDensity(sinogram, N, "Sinogram") ;
 
         // inferred integral of density points (actually sum of density
         // points, here) for laternormalization of reconstruction
@@ -78,7 +71,7 @@ public class Sinogram {
             FFT.fft1d(sinogramFTRe[iTheta],sinogramFTIm[iTheta], 1);
         }
 
-        DisplaySinogramFT display3 =
+  
         new DisplaySinogramFT(sinogramFTRe, sinogramFTIm, N,
                                 "Sinogram radial Fourier Transform") ;
 
@@ -86,26 +79,9 @@ public class Sinogram {
         int CUTOFF = N/8
         ;
 
-//        for(int iTheta = 0 ; iTheta < N ; iTheta++) {
-//            for(int iK = 0 ; iK < N ; iK++) {
-//                double kSigned = iK <= N/2 ? iK : iK - N ;
-//
-//                if (Math.abs(kSigned) >= CUTOFF){
-//                    sinogramFTRe[iTheta][iK] = 0;
-//                    sinogramFTIm[iTheta][iK] = 0;
-//                } //Cuttoff
-//                else{
-//                    sinogramFTRe[iTheta][iK] *= Math.abs(kSigned);
-//                    sinogramFTIm[iTheta][iK] *= Math.abs(kSigned);
-//                }
-//            }
-//        }
-
-        
         for(int iTheta = 0 ; iTheta < N ; iTheta++) {
             for(int iK = 0 ; iK < N ; iK++) {
-                double kSigned = Math.abs(iK) * Math.cos(Math.PI * iK /(2 * CUTOFF));
-
+                double kSigned = iK <= N/2 ? iK : iK - N ;
 
                 if (Math.abs(kSigned) >= CUTOFF){
                     sinogramFTRe[iTheta][iK] = 0;
@@ -118,6 +94,23 @@ public class Sinogram {
             }
         }
 
+        
+//        for(int iTheta = 0 ; iTheta < N ; iTheta++) {
+//            for(int iK = 0 ; iK < N ; iK++) {
+//                double kSigned = Math.abs(iK) * Math.cos(Math.PI * iK /(2 * CUTOFF));
+//
+//
+//                if (Math.abs(kSigned) >= CUTOFF){
+//                    sinogramFTRe[iTheta][iK] = 0;
+//                    sinogramFTIm[iTheta][iK] = 0;
+//                } //Cuttoff
+//                else{
+//                    sinogramFTRe[iTheta][iK] *= Math.abs(kSigned);
+//                    sinogramFTIm[iTheta][iK] *= Math.abs(kSigned);
+//                }
+//            }
+//        }
+//
 
         //inverse FFT
         for(int iTheta = 0 ; iTheta < N ; iTheta++) {
@@ -125,8 +118,7 @@ public class Sinogram {
         }
 
 
-        DisplayDensity display4 =
-                new DisplayDensity(sinogramFTRe, N, "Filtered sinogram") ;
+        new DisplayDensity(sinogramFTRe, N, "Filtered sinogram") ;
 
         double [] [] backProjection = new double [N] [N] ;
 
@@ -147,8 +139,8 @@ public class Sinogram {
                 backProjection [i] [j] *= factor ;
             }
         }
-        DisplayDensity display5 =
-                new DisplayDensity(backProjection, N,
+        
+        new DisplayDensity(backProjection, N,
                                    "Back projected cosine Filter",
                                    GREY_SCALE_LO, GREY_SCALE_HI) ;
 
