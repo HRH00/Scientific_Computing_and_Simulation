@@ -245,12 +245,12 @@ public class LBM {
             // Streaming step.
             for(int i = 0 ; i < NX ; i++) {
 
-                int iP1 = (i + 1) % NX ;
-                int iM1 = (i - 1 + NX) % NX ;
-
-                double [] [] fin_i = fin [i] ;
-                double [] [] fin_iM1 = fin [iM1] ;
-                double [] [] fin_iP1 = fin [iP1] ;
+              //  int iP1 = (i + 1) % NX ;
+              //  int iM1 = (i - 1 + NX) % NX ;
+              //  
+              //  double [] [] fin_i = fin [i] ;
+              //  double [] [] fin_iM1 = fin [iM1] ;
+              //  double [] [] fin_iP1 = fin [iP1] ;
 
                 for(int j = 0 ; j < NY ; j++) {
                     double [] fout_ij = fout [i] [j] ;

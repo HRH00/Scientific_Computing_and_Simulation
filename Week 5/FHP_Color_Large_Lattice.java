@@ -1,31 +1,74 @@
+
 import java.awt.* ;
+
+
 import javax.swing.* ;
 
-public class FHP_Color {
-    final static int NX = 500, NY =  500 ; // Lattice dimensions, make dimentions less than screen size
-    final static int q = 6 ;  // population
-    final static int NITER = 2000 ;
-    final static int DELAY = 30 ; //ms
+public class FHP_Color_Large_Lattice {
 
-    final static double AMBIENT_DENSITY = 0.01;  // initial state, between 0 and 1.0.
-    final static double BALLDENSITY = 0.7;  // initial state, between 0 and 1.0.
+    //set these 
+    static int Lattice_Size = 900; // make multiple ofdisplaySizeX, such that NX / displaySizeX is odd
+    final static int Display_Size = 300; //Window size Pixels
+
+    //Delay between each iteration
+    final static int DELAY = 0 ; //ms
+
+    //set partical densitys
+    final static double AMBIENT_Partical_DENSITY = 0.01;  // initial state, between 0 and 1.0.
+    final static double BALLDENSITY = 1;  // initial state, between 0 and 1.0. 
+
+    //Makes one of the circles a vaccum
+    final static boolean MAKE_A_VACUUM_CIRCLE = true;
+
+    final static double Color_Low_Cutoff = 0.3; //must be between 0 and 1, MUST be lower than Color_Med_Cutoff
+    final static double Color_Med_Cutoff  = 0.9; //must be between 0 and 1
+
+    final static int displaySizeX = Display_Size;
+    final static int displaySizeY = Display_Size;
+    final static int NITER = 1000 ;
+
+    static int NX =  Lattice_Size ; // Lattice dimensions 
+    static int NY =  Lattice_Size ; // Lattice dimensions 
+    static boolean error = false;
+    
+
+    final static int q = 6 ;  // population
+
     static Display display = new Display() ;
+
     static boolean [] [] [] fin = new boolean [NX] [NY] [q] ;
     static boolean [] [] [] fout = new boolean [NX] [NY] [q] ;
 
     public static void main(String args []) throws Exception {
+
+    //normalise the lattice size
+    if (((NX / displaySizeX) % 2 == 0) || (NX % displaySizeX !=0)){
+        int multipleLatticeBy = (int) (Math.round((double) NX / displaySizeX));
+        if (multipleLatticeBy % 2 == 0 ){
+            multipleLatticeBy++;
+        }
+        error = true;
+        System.out.println("Lattice Dimentions bad, Set NX =\t"+displaySizeX*multipleLatticeBy);
+    }
+    else if (NX<Display_Size) {
+        error = true;
+        System.out.println("Lattice Size to small, set to:\t"+Display_Size*3);
+    }
+    else{System.out.println("Lattice size is good!");}
+
       //make some noise!
       for(int i = 0; i < NX ; i++) { 
           for(int j =  0; j < NY ; j++) { 
               boolean [] fin_ij = fin [i] [j] ;
               for(int d = 0 ; d < q ; d++) {
-                  if(Math.random() < AMBIENT_DENSITY) {
-                      fin_ij [d] = true ;
+                    if(Math.random() < AMBIENT_Partical_DENSITY){
+                        fin_ij [d] = true ;
                   }
               }
           }
        }
-
+    
+       
         int centerX = NX / 4;  // X-coordinate of the circle center
         int centerY = NY / 2;  // Y-coordinate of the circle center
         int radius = NX / 8;  // Radius of the circle
@@ -46,39 +89,51 @@ public class FHP_Color {
             }
         }
     }
-    
 
-       centerX = (int) ((int) NX/2*1.5);  // X-coordinate of the circle center
-    
-        for (int i = centerX - radius; i <= centerX + radius; i++) {
+    //Draw Circle on right Side
+    centerX = (int) ((int) NX/2*1.5);  // X-coordinate of the circle center
+
+    for (int i = centerX - radius; i <= centerX + radius; i++) {
         for (int j = centerY - radius; j <= centerY + radius; j++) {
-        int distanceX = i - centerX;
-        int distanceY = j - centerY;
-        double distance = Math.sqrt(distanceX * distanceX + distanceY * distanceY);
+            int distanceX = i - centerX;
+            int distanceY = j - centerY;
+            double distance = Math.sqrt(distanceX * distanceX + distanceY * distanceY);
 
-        if (distance <= radius) {
-            boolean[] fin_ij = fin[i][j];
-            for (int d = 0; d < q; d++) {
-                if (Math.random() < BALLDENSITY) {
-                    fin_ij[0] = true;
+            if (distance <= radius) {
+                boolean[] fin_ij = fin[i][j];
+                for (int d = 0; d < q; d++) {
+                    if (Math.random() < BALLDENSITY) {
+                        fin_ij[0] = true;
+                    }
                 }
             }
         }
     }
-}
+    
+    if(MAKE_A_VACUUM_CIRCLE){
 
+        for (int i = centerX - radius; i <= centerX + radius; i++) {
+            for (int j = centerY - radius; j <= centerY + radius; j++) {
+                int distanceX = i - centerX;
+                int distanceY = j - centerY;
+                double distance = Math.sqrt(distanceX * distanceX + distanceY * distanceY);
 
-        //fin [NX/2] [NY/2+4] [2] = true ; //vertical collision test
-        //fin [NX/2] [NY/2-4] [3] = true ; //vertical collision test
+                if (distance <= radius) {
+                    boolean[] fin_ij = fin[i][j];
+                    for (int d = 0; d < q; d++) {
+                            fin_ij[d] = false;
+                    }
+                }
+            }
+        }   
+    }
 
-        //fin [NX/2-8] [NY/2+10] [1] = true ; // horizontal collision test
-        //fin [NX/2+8] [NY/2+10] [0] = true ; // horizontal collision test
 
         display.repaint() ;
         Thread.sleep(DELAY) ;
-
+        if (!error){
         for(int iter = 0 ; iter < NITER ; iter++) {
-
+         
             // Collision
 
             for(int i = 0; i < NX ; i++) { 
@@ -249,91 +304,100 @@ public class FHP_Color {
 
             display.repaint() ;
             Thread.sleep(DELAY) ;
+        }}
+        else{
+            System.exit(0); // error case
         }
     }
 
     
     static class Display extends JPanel {
 
-        static final double ROW_HEIGHT = Math.sqrt(3) / 2 ;
-        final static int CELL_SIZE = 1 ;  
-//        (int) 1500/NX ; 
 
-        int displaySizeX = NX ;
-        int displaySizeY = (int) (ROW_HEIGHT * CELL_SIZE * NY + 0.5) ;
-
-
-        public static final int ARROW_START = 2 ;
-        public static final int ARROW_END   = 7 ;
-        public static final int ARROW_WIDE  = 3 ;
-
-        public static final int DIAG_X_0 = -1 ;
-        public static final int DIAG_X_1 = 3 ;
-        public static final int DIAG_X_2 = 4 ;
-        public static final int DIAG_Y_0 = 4 ;
-        public static final int DIAG_Y_1 = 0 ;
-        public static final int DIAG_Y_2 = 6 ;
+        final static int CELL_SIZE = NX / displaySizeX ; 
+        final static int MAX_PARTICAL_DENSITY = CELL_SIZE*CELL_SIZE;
+        
+        final static int Cutoff_Low = (int) (MAX_PARTICAL_DENSITY * Color_Low_Cutoff);
+        final static double Multiplier_Low =  (255.0/Cutoff_Low);
+        
+        final static int Cutoff_Medium = (int) (MAX_PARTICAL_DENSITY * Color_Med_Cutoff);
+        final static double Multiplier_Medium = 255.0/Cutoff_Medium;
+        
+        final static double Multiplier_High = 255.0/MAX_PARTICAL_DENSITY;
 
         Display() {
 
             setPreferredSize(new Dimension(displaySizeX, displaySizeY)) ;
 
-            JFrame frame = new JFrame("HPP-Altered");
+            JFrame frame = new JFrame("HPP-Altered-Large-Lattice");
             frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
             frame.setContentPane(this);
             frame.pack();
             frame.setVisible(true);
         }
 
+
+
         public void paintComponent(Graphics g) {
 
+
+
             g.setColor(Color.yellow) ; //Sets colour of below rect
-            g.fillRect(0, 0,  NX /(int) CELL_SIZE , (int) NY / CELL_SIZE ) ; //coordinates and size of background rect
+            g.fillRect(0, 0,  displaySizeX/1, displaySizeY/1) ; //coordinates and size of background rect
 
+          
 
+            g.setColor(Color.black) ; //Sets colour of below rect
+            int start_Cell_X;
+            int start_Cell_Y;
+            int end_Cell_X;
+            int end_Cell_Y  ;
 
-            
-            //loop over x and y arrays
-            for(int i = 0 ; i < NX ; i++) {
-                for(int j = 0 ; j < NY ; j++) {
+            //for each pixel
+            for(int i = 0 ; i < displaySizeX ; i++) {
+                for(int j = 0 ; j < displaySizeY; j++) {
                     int partical_Density = 0;
+
                     
-                    for (int length = i-3; length <= i+3; length++){
-                        for (int height = j-3; height <= j+3; height++){
+                    //iterate over the fin Array
+                    start_Cell_X = i * CELL_SIZE;
+                    start_Cell_Y = j * CELL_SIZE;
+                    end_Cell_X = start_Cell_X + CELL_SIZE ;
+                    end_Cell_Y = start_Cell_Y + CELL_SIZE ;
+                    //count density
+                    for (int x = start_Cell_X; x < end_Cell_X; x++){
+                        for (int y = start_Cell_Y; y < end_Cell_Y; y++){                         
 
-                            int xVal = (length + NX) % NX ;
-                            int yVal = (height + NY) % NY ;
-
-                            for (int particalIndex =0;particalIndex <= q -1 ;particalIndex++){
-                                if (fin[xVal][yVal][particalIndex]){
+                            for (int state = 0; state <= q -1 ;state++){
+                                if (fin[x][y][state]){
+                                    
                                     partical_Density++;
                                     break;
                                 };
                             }
                         }
                     }
-                        
-                    //colour selector
-                    if (partical_Density<25){
-                        int multiplier = 255/25;
 
-                        g.setColor(new Color(0,partical_Density*multiplier,0));
-                    }
-                    else if(partical_Density<35){
-                        
-                        int multiplier = 255/35;
-                        g.setColor(new Color(partical_Density*multiplier,partical_Density*multiplier,0));
-                    }          
+
+                    
+                    if(partical_Density <=Cutoff_Low){
+                        g.setColor(new Color(0,(int) (partical_Density*Multiplier_Low),0));}
+                    else if(partical_Density <=Cutoff_Medium){
+                        g.setColor(new Color((int)(partical_Density*Multiplier_Medium),(int)(partical_Density*Multiplier_Medium),0));}
                     else{
-                        int multiplier = 255/49;
-                        g.setColor(new Color(partical_Density*multiplier,0,0));
+                        int redValue=((int)(partical_Density*Multiplier_High));
+                        g.setColor(new Color((int) (redValue),0,0));
+                 
                     }
-                    g.fillRect(i*CELL_SIZE, j*CELL_SIZE, CELL_SIZE, CELL_SIZE) ;
+
+
+                    g.fillRect(i, j, 10,10);
+
 
 
                 }
-            } 
+            }
+
         }
     }
-}
-
+} 
