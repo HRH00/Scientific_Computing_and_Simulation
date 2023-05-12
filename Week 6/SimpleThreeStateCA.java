@@ -1,5 +1,7 @@
 
 import java.awt.*;
+
+import javax.naming.ldap.StartTlsRequest;
 import javax.swing.*;
 
 
@@ -8,6 +10,13 @@ import javax.swing.*;
 // 1 - Recovering
 
 public class SimpleThreeStateCA {
+
+
+    //1=Bottom,  2=Middle,  3=Corner
+    final static int startLocation = 3;
+    final static boolean doSpiralWave = false;
+
+
 
     final static int N = 50;
     final static int CELL_SIZE = 5;
@@ -22,11 +31,68 @@ public class SimpleThreeStateCA {
     public static void main(String args[]) throws Exception {
 
         // Define initial state - excited bottom row / resting elsewhere.
+
+    switch (startLocation) {
+    case 1:
         for (int i = 0; i < N; i++) {
             for (int j = 0; j < N; j++) {
                 state[i][j] = j == N - 1 ? 2 : 0;
             }
+        }   
+        break;
+
+    
+    case 2:
+        for (int i = 0; i < N; i++) {
+            for (int j = 0; j < N; j++) {
+                state[i][j] = 0;
+            }
         }
+        state[N/2-1][N/2-1]=2;
+        state[N/2-1][N/2]=2;
+        state[N/2-1][N/2+1]=2;
+
+        state[N/2][N/2-1]=2;
+        state[N/2][N/2]=2;
+ 
+        state[N/2][N/2+1]=2;
+
+        state[N/2+1][N/2-1]=2;
+        state[N/2+1][N/2]=2;    
+        state[N/2+1][N/2+1]=2;  
+        break;
+
+    case 3:
+        for (int i = 0; i < N; i++) {
+            for (int j = 0; j < N; j++) {
+                state[i][j] = 0;
+            }
+        }   
+//        state[0][0]=2;
+//        
+//        state[0][1]=2;
+//        state[1][0]=2;
+//        state[1][1]=2;
+//
+        state[2][0]=2;
+        state[2][1]=2;
+        state[2][2]=2;
+        state[0][2]=2;
+        state[1][2]=2;
+        state[2][2]=2;
+        
+
+        break;
+
+
+
+
+    
+    }
+        
+    
+    
+     
 
         display.repaint();
         pause();
@@ -39,14 +105,21 @@ public class SimpleThreeStateCA {
 
             // Chop wave when half-way up.
             if (iter == N / 2) {
-
-                
-                for (int i = 0; i < N / 2; i++) {
-                    for (int j = 0; j < N; j++) {
-                        state[i][j] = 0;
+                if (doSpiralWave){
+                    //spiral wave
+                    for (int i = 0; i < N / 2; i++) {
+                        for (int j = 0; j < N/2; j++) {
+                            state[i][j] = 0;
+                        }
                     }
                 }
 
+                else{
+                    //plane wave
+                    for (int j = 0; j < N; j++) {
+                        state[N/2][j] = 0;
+                    }
+                }
             }
 
             // Calculate which cells have excited neighbnours.
