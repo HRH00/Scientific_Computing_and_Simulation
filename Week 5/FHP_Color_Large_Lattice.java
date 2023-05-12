@@ -7,14 +7,14 @@ import javax.swing.* ;
 public class FHP_Color_Large_Lattice {
 
     //set these 
-    static int Lattice_Size = 900; // make multiple ofdisplaySizeX, such that NX / displaySizeX is odd
+    static int Lattice_Size = 2700; // make multiple ofdisplaySizeX, such that NX / displaySizeX is odd
     final static int Display_Size = 300; //Window size Pixels
 
     //Delay between each iteration
     final static int DELAY = 0 ; //ms
 
     //set partical densitys
-    final static double AMBIENT_Partical_DENSITY = 0.01;  // initial state, between 0 and 1.0.
+    final static double AMBIENT_Partical_DENSITY = .6;  // initial state, between 0 and 1.0.
     final static double BALLDENSITY = 1;  // initial state, between 0 and 1.0. 
 
     //Makes one of the circles a vaccum
@@ -111,6 +111,7 @@ public class FHP_Color_Large_Lattice {
     }
     
     if(MAKE_A_VACUUM_CIRCLE){
+        radius = (int) (NX/5);
 
         for (int i = centerX - radius; i <= centerX + radius; i++) {
             for (int j = centerY - radius; j <= centerY + radius; j++) {

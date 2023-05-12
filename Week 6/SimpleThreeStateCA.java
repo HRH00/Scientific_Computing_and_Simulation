@@ -39,6 +39,8 @@ public class SimpleThreeStateCA {
 
             // Chop wave when half-way up.
             if (iter == N / 2) {
+
+                
                 for (int i = 0; i < N / 2; i++) {
                     for (int j = 0; j < N; j++) {
                         state[i][j] = 0;
@@ -52,14 +54,15 @@ public class SimpleThreeStateCA {
                 for (int j = 0; j < N; j++) {
 
                     // find neighbours...
+                    //mins for array bounding
                     int ip = Math.min(i + 1, N - 1);
                     int im = Math.max(i - 1, 0);
-
                     int jp = Math.min(j + 1, N - 1);
                     int jm = Math.max(j - 1, 0);
 
+                    //if adjacent cells = 2 then true, otherwise false
                     excitedNeighbour[i][j]
-                            = state[i][jp] == 2
+                            =  state[i][jp] == 2
                             || state[i][jm] == 2
                             || state[ip][j] == 2
                             || state[im][j] == 2;
@@ -69,6 +72,7 @@ public class SimpleThreeStateCA {
             // Update state.
             for (int i = 0; i < N; i++) {
                 for (int j = 0; j < N; j++) {
+
                     switch (state[i][j]) {
                         case 0:
                             if (excitedNeighbour[i][j]) {
@@ -110,6 +114,7 @@ public class SimpleThreeStateCA {
             g.fillRect(0, 0, WINDOW_SIZE, WINDOW_SIZE);
             for (int i = 0; i < N; i++) {
                 for (int j = 0; j < N; j++) {
+                    
                     if (state[i][j] > 0) {
                         if (state[i][j] == 2) {
                             g.setColor(Color.BLACK);
