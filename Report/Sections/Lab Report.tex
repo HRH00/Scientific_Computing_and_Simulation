@@ -168,7 +168,9 @@
 
 
 
+\newpage
 \section{Lab 2 - Fast Fourier Transform}
+\newpage
 This week a Fast Fourier Transform was implemented and benchmarked. Each program was run three times to compare processing speeds. 
 
 \subsection{2D FFT Implementation}
@@ -358,14 +360,85 @@ Implementation is shown in \autoref{fig:W3-cos-filter-code}.
 \end{figure}
 
 
+\newpage
 \section{Lab 4 - Radio Interferometry}
 
 
+\newpage
 \section{Lab 5 Lattice gas models}
-This 
-\section{Lab 6}
+In this lab, Lattice gas cellular automata were explored in this lab.
+
+
+
+
+\newpage
+\section{Lab 6 - Excitable Media} 
+\subsection{3 State CA}
+This lab consisted of simulating excitable media using cellular automata (CA). To begin, a three-state CA was used to simulate waves. The initial spiral wave output is shown in figure \autoref{fig:W6-initial-3CA}.
+
+\begin{figure}[H] 
+    \centering
+    \includegraphics[width=0.49\columnwidth]{Figures/Week 6/3stateCA-Initial.png}
+    \caption{Screenshot of the graphical output of the initial 3-state CA}
+    \label{fig:W6-initial-3CA}
+\end{figure}
+
+The Java code was altered to allow for a plane wave simulation. To achieve this, the nested for loop which breaks the initial wave was removed. To allow the wave to repeat itself, the state of all indices on the bottom half of the state matrix was set to '0'. the code and output of the program are shown in Figures \ref{fig:W6-3CA-plane-code} and \ref{fig:W6-3CA-plane-output}. 
+
+
+\begin{figure}[H] 
+    \centering
+    \includegraphics[width=0.49\columnwidth]{Figures/Week 6/3stateCA-plane-code.png}
+    \caption{Screenshot of the Java code to produce a plane wave}
+    \label{fig:W6-3CA-plane-code}
+\end{figure}
+
+\begin{figure}[H] 
+    \centering
+    \includegraphics[width=0.49\columnwidth]{Figures/Week 6/3stateCA-plane-output.png}
+    \caption{Screenshot of the graphical output of a plane wave using 3-state CA}
+    \label{fig:W6-3CA-plane-output}
+\end{figure}
+
+
+
+For different simulation starting locations, conditional branching was implemented to allow the user to set the starting location and wave type via a variable in the program. A variable called 'startLocation' must be set to '1', '2' or'3' to define the starting location. \autoref{fig:W6-3CA-conditional-logic-code} shows the code implementing this.
+
+A similar approach was created to allow the user to define the 'doSpiralWave' variable, allowing the wave type to be altered.
+
+\begin{figure}[H] 
+    \centering
+    \includegraphics[width=0.6\columnwidth]{Figures/Week 6/3stateCA-plane-logic-code.png}
+    \caption{Screenshot of the code controlling simulation start-location logic}
+    \label{fig:W6-3CA-conditional-logic-code}
+\end{figure}
+
+\newpage
+
+\autoref{fig:W6-3CA-start-corner} shows the graphical output when 'startLocation=3', starting the simulation in the corner of the grid. It sets all the state array values to '0', with the exception of a small box of excited cells in one corner.
+
+\begin{figure}[H] 
+    \centering
+    \includegraphics[width=0.49\columnwidth]{Figures/Week 6/3stateCA-CORNER-output.png}
+    \caption{Screenshot of 3-State CA simulation starting in the corner of the grid}
+    \label{fig:W6-3CA-start-corner}
+\end{figure}
+
+\autoref{fig:W6-3CA-start-middle} shows the graphical output when 'startLocation=2', starting the simulation in the middle of the grid by setting . 
+\begin{figure}[H] 
+    \centering
+    \includegraphics[width=0.49\columnwidth]{Figures/Week 6/3stateCA-MIDDLE-output.png}
+    \caption{Screenshot of 3-State CA simulation starting in the middle of the grid}
+    \label{fig:W6-3CA-start-middle}
+\end{figure}
+
+\subsection{GST}
+
+
+\subsection{4 State CA}
+\newpage
 \section{Lab 7}
+\newpage
 \section{Lab 8}
-\section{Lab 9}
+\newpage
 \section{Lab 10}
-\section{Lab 11}
