@@ -6,16 +6,16 @@ public class GerhardtSchusterTyson {
 
     final static int N = 200;
     final static int CELL_SIZE = 5;
-    final static int DELAY = 100;
+    final static int DELAY = 10;
 
     final static int V_MAX = 100;	// Maximum possible value for v
     final static int V_RECO = 70;	// In order to a cell jumps to the recovery state, V_RECO < v
     final static int V_EXCI = 65;	// To get a cell excited, v <= V_EXCI
     final static int G_UP = 20;
     final static int G_DOWN = 5;
-    final static int K0_EXCI = 0;	// Minimum number of excited neighbours to make a cell excited
+    final static int K0_EXCI = 5;	// Minimum number of excited neighbours to make a cell excited
 					// Smaller values of K0_EXCI represent higher excitabilities
-    final static int K0_RECO = 5;	// Minimum number of unexcited neighbours to make a cell jumps to recovery state
+    final static int K0_RECO = 0;	// Minimum number of unexcited neighbours to make a cell jumps to recovery state
     final static int R = 3;		// Neighbourhood radius
 
     static int[][] u = new int[N][N];
@@ -30,7 +30,7 @@ public class GerhardtSchusterTyson {
         // Define initial state - excited bottom row / resting elsewhere.
         for (int i = 0; i < N; i++) {
             for (int j = 0; j < N; j++) {
-                u[i][j] =(( j < 1)&&(i < 1)) ? 1 : 0;
+                u[i][j] = j > N - 5 ? 1 : 0;
                 v[i][j] = 0;
             }
         }
@@ -97,10 +97,10 @@ public class GerhardtSchusterTyson {
     }
 
     private static double kReco(int i, int j) {
-        return ((R + 1) * (R + 1) - 1) - (K0_RECO + (R * (2 * R + 1) - K0_RECO) * 
-                ((double) (v[i][j] - V_MAX)) / (V_RECO - V_MAX));
-      //return K0_RECO + (R * (2 * R + 1) - K0_RECO) * 
-      //          ((double) (v[i][j] - V_MAX)) / (V_RECO - V_MAX);
+      //  return ((R + 1) * (R + 1) - 1) - (K0_RECO + (R * (2 * R + 1) - K0_RECO) * 
+      //          ((double) (v[i][j] - V_MAX)) / (V_RECO - V_MAX));
+      return K0_RECO + (R * (2 * R + 1) - K0_RECO) * 
+                ((double) (v[i][j] - V_MAX)) / (V_RECO - V_MAX);
     
     }
     

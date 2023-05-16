@@ -52,9 +52,10 @@
         \end{equation}  
         \end{center}
 
+        
         \begin{figure}[H]
             \centering
-            \includegraphics[width=1\columnwidth]{Figures/Week 1/W1-SimpleFT-InverseDFT-Implementation.png}
+            \includegraphics[width=0.9\columnwidth]{Figures/Week 1/W1-SimpleFT-InverseDFT-Implementation.png}
             \caption{A screenshot of the java inverse DFT implementation}
             \label{fig:inverse-DFT-Code}
     \end{figure}
@@ -383,7 +384,7 @@ This lab consisted of simulating excitable media using cellular automata (CA). T
     \label{fig:W6-initial-3CA}
 \end{figure}
 
-The Java code was altered to allow for a plane wave simulation. To achieve this, the nested for loop which breaks the initial wave was removed. To allow the wave to repeat itself, the state of all indices on the bottom half of the state matrix was set to '0'. the code and output of the program are shown in Figures \ref{fig:W6-3CA-plane-code} and \ref{fig:W6-3CA-plane-output}. 
+The Java code was altered to allow for a plane wave simulation. To achieve this, the nested for loop which breaks the initial wave was removed. To allow the wave to repeat itself, the state of all indices on the bottom half of the 'state' matrix was set to '0'. the code and output of the program are shown in Figures \ref{fig:W6-3CA-plane-code} and \ref{fig:W6-3CA-plane-output}. 
 
 
 \begin{figure}[H] 
@@ -415,7 +416,7 @@ A similar approach was created to allow the user to define the 'doSpiralWave' va
 
 \newpage
 
-\autoref{fig:W6-3CA-start-corner} shows the graphical output when 'startLocation=3', starting the simulation in the corner of the grid. It sets all the state array values to '0', with the exception of a small box of excited cells in one corner.
+\autoref{fig:W6-3CA-start-corner} shows the graphical output when 'startLocation=3', starting the simulation in the corner of the grid. It sets all the 'state' array values to '0', with the exception of a small box of excited cells in one corner.
 
 \begin{figure}[H] 
     \centering
@@ -433,9 +434,158 @@ A similar approach was created to allow the user to define the 'doSpiralWave' va
 \end{figure}
 
 \subsection{GST}
+Next, a Gerhardt-Schuster-Tyson model was implemented to create a spiral and plane wave. The highlighted nested for loop shown in \autoref{fig:W6-GST-plane-code} was removed to create a plane wave simulation. \autoref{fig:W6-GST-side-by-side-output} shows both spiral (left side) and plane wave (right side) simulation outputs.
+
+\begin{figure}[H] 
+    \centering
+    \includegraphics[width=0.49\columnwidth]{Figures/Week 6/GST-plane-code.png}
+    \caption{Screenshot of the GST plane wave code alteration}
+    \label{fig:W6-GST-plane-code}
+\end{figure}
+
+\begin{figure}[H] 
+    \centering
+    \includegraphics[width=0.49\columnwidth]{Figures/Week 6/GST-side-by-side-output.png}
+    \caption{Screenshot of the graphical output of GST spiral (left) and plane (right) wave simulations}
+    \label{fig:W6-GST-side-by-side-output}
+\end{figure}
 
 
+Changing the value of some parameters alters the wave shape, size and stability. For instance, increasing the value of 'K0\_EXCI' to '10' decreases cell excitability. This causes the wave formation to look square, rather than circular, in addition to reducing the width of the wave and slowing the wave propagation speed. This is shown in \autoref{fig:W6-GST-less-excitable}.
+
+\begin{figure}[H] 
+    \centering
+    \includegraphics[width=0.49\columnwidth]{Figures/Week 6/gst-square.png}
+    \caption{Screenshot of the graphical output of GST when cell excitability is reduced}
+    \label{fig:W6-GST-less-excitable}
+\end{figure}
+
+
+Altering the 'K0\_RECO' sets the minimum number of unexcited neighbours to set a cell's state to recovery. Increasing the value causes more cells to remain excited after each wave has passed, these cells usually appear near the edges of the matrix, introducing 'noise' into the system. \autoref{fig:W6-GST-high-min-neighbours} shows these pixels at the edges of the grid.
+
+
+Inversely, reducing this value decreases the number of cells left excited after a wave has passed, seen in \autoref{fig:W6-GST-low-min-neighbours}.
+\begin{figure}[H] 
+    \centering
+    \includegraphics[width=0.49\columnwidth]{Figures/Week 6/GST-high-min-neighbours.png}
+    \caption{Screenshot of the graphical output of GST when K0\_RECO is high}
+    \label{fig:W6-GST-high-min-neighbours}
+\end{figure}
+
+\begin{figure}[H] 
+    \centering
+    \includegraphics[width=0.49\columnwidth]{Figures/Week 6/GST-low-min-neighbours.png}
+    \caption{Screenshot of the graphical output of GST when K0\_RECO is low}
+    \label{fig:W6-GST-low-min-neighbours}
+\end{figure}
+
+The neighbourhood radius correlates with the width of the wave, increasing this value causes the wave to be thicker \autoref{fig:W6-GST-high-radius}. The origin of the spiral become lower on the grid with higher values.
+
+\begin{figure}[H] 
+    \centering
+    \includegraphics[width=0.49\columnwidth]{Figures/Week 6/GST-Large-Radius.png}
+    \caption{Screenshot of the graphical output of GST when 'R' - radius is increased}
+    \label{fig:W6-GST-high-radius}
+\end{figure}
+\newpage
 \subsection{4 State CA}
+The initial three-state CA was built upon to add another excited state, state '3' now represents the front of a wave. In addition to the extra state, another array timeToStateChange was created to store the time value until a state may change. \autoref{fig:W6-4CA-dec} shows the variable declaration, \autoref{fig:W6-4CA-init} shows the arrays' value initiation.
+
+
+\begin{figure}[H] 
+    \centering
+    \includegraphics[width=1\columnwidth]{Figures/Week 6/4stateCA-time-delaration.png}
+    \caption{Screenshot of the 'timeToStateChange' declaration code}
+    \label{fig:W6-4CA-dec}
+\end{figure}
+
+\begin{figure}[H] 
+    \centering
+    \includegraphics[width=1\columnwidth]{Figures/Week 6/4stateCA-time-values-init.png}
+    \caption{Screenshot of the 'timeToStateChange' initiation code}
+    \label{fig:W6-4CA-init}
+\end{figure}
+
+
+The timeToStateChange stores an integer between 0 and 3. In each iteration, all time values are decremented towards 0. This value is updated each state change to the corresponding value in \autoref{tab:state-time-values}.
+
+\begin{table}[htbp]
+  \centering
+  \renewcommand{\arraystretch}{1.2}
+  \begin{tabular}{|c|c|}
+    \hline
+    \textbf{state} & \textbf{timeToStateChange} \\
+
+    \hline
+    1 & 3 \\
+    \hline
+    2 & 3 \\
+    \hline
+    3 & 2 \\
+    \hline
+  \end{tabular}
+  \caption{timeToStateChange value when a cell transitions into each state}
+  \label{tab:state-time-values}
+\end{table}
+
+
+The program must search for excited neighbours. The neighbour radius has been increased by four to eight neighbours, meaning cells which are diagonally adjacent to the origin cells are included in the search. \autoref{fig:W6-4CA-search-code} Shows that two comparisons are made on each of these cell - setting excitedNeighbour to true, if either a '2' or '3' is found in any of the eight cells. 
+\begin{figure}[H] 
+    \centering
+    \includegraphics[width=1\columnwidth]{Figures/Week 6/4stateCA-neighbour-search-code.png}
+    \caption{Screenshot of 'fourStateCA' code searching for excited neighbours}
+    \label{fig:W6-4CA-search-code}
+\end{figure}
+
+In each iteration, the program must update each 'state' and 'timeToStateChange' value. The first conditional statement, shown in \autoref{fig:W6-4CA-search-code}, decrements the 'timeToStateChange' by one. 
+
+After this the switch statement updates the 'state' and 'timeToStateChange' values dependant on if the cell has excited neighbours or not, and if timeToStateChange is 0.  
+
+\begin{figure}[H] 
+    \centering
+    \includegraphics[width=1\columnwidth]{Figures/Week 6/4stateCA-update-code.png}
+    \caption{Screenshot of fourStateCA Code updating 'state' and 'timeToStateChange' arrays}
+    \label{fig:W6-4CA-update-code}
+\end{figure}
+
+
+\autoref{fig:W6-4CA-colour-code} shows an additional colouring condition has been added, allowing a different colour for the new state=3, the colouring scheme is outlined in \autoref{tab:state-color-values}.  
+
+\begin{figure}[H] 
+    \centering
+    \includegraphics[width=1\columnwidth]{Figures/Week 6/4stateCA-color-code.png}
+    \caption{Screenshot of fourStateCA cell colouring code}
+    \label{fig:W6-4CA-colour-code}
+\end{figure}
+
+\vspace{10mm}
+\begin{table}[htbp]
+  \centering
+  \begin{tabular}{|c|c|c|}
+    \hline
+    \textbf{State Number} &\textbf{State Meaning} & \textbf{Cell Colour} \\
+
+    \hline
+    0 & Resting & Background (White)\\
+    \hline
+    1 & Recovering & Blue \\
+    \hline
+    2 & Excited-Wave-Plateau & Dark Red \\
+    \hline
+    3 & Excited-Wave-Front & Bright Red \\
+    \hline
+  \end{tabular}
+  \caption{'fourStateCA' Cell Colour Scheme}
+  \label{tab:state-color-values}
+\end{table}
+
+The graphical output for the program is shown in \autoref{fig:W6-4CA-output}.
+\begin{figure}[H] 
+    \centering
+    \includegraphics[width=0.49\columnwidth]{Figures/Week 6/4stateCA-output.png}
+    \caption{Screenshot of 'fourStateCA' graphical output}
+    \label{fig:W6-4CA-output}
+\end{figure}
 \newpage
 \section{Lab 7}
 \newpage
