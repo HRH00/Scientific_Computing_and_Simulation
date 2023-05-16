@@ -1,7 +1,6 @@
 
 import java.awt.*;
 
-import javax.naming.ldap.StartTlsRequest;
 import javax.swing.*;
 
 
@@ -13,13 +12,16 @@ public class SimpleThreeStateCA {
 
 
     //1=Bottom,  2=Middle,  3=Corner
-    final static int startLocation = 3;
-    final static boolean doSpiralWave = false;
+
+    final static int startLocation = 2;
+    
+    final static boolean doSpiralWave = true;
 
 
 
     final static int N = 50;
     final static int CELL_SIZE = 5;
+
     final static int DELAY = 100;
 
     static int[][] state = new int[N][N];
@@ -40,26 +42,21 @@ public class SimpleThreeStateCA {
             }
         }   
         break;
-
-    
     case 2:
         for (int i = 0; i < N; i++) {
             for (int j = 0; j < N; j++) {
                 state[i][j] = 0;
             }
         }
-        state[N/2-1][N/2-1]=2;
-        state[N/2-1][N/2]=2;
-        state[N/2-1][N/2+1]=2;
-
-        state[N/2][N/2-1]=2;
-        state[N/2][N/2]=2;
- 
-        state[N/2][N/2+1]=2;
-
-        state[N/2+1][N/2-1]=2;
-        state[N/2+1][N/2]=2;    
-        state[N/2+1][N/2+1]=2;  
+        state[N/2-1][N/2-1]=2;//set excited
+        state[N/2-1][N/2]=2;//set excited
+        state[N/2-1][N/2+1]=2;//set excited
+        state[N/2][N/2-1]=2;//set excited
+        state[N/2][N/2]=2;//set excited
+        state[N/2][N/2+1]=2;//set excited
+        state[N/2+1][N/2-1]=2;//set excited
+        state[N/2+1][N/2]=2;    //set excited
+        state[N/2+1][N/2+1]=2;  //set excited
         break;
 
     case 3:
@@ -68,20 +65,12 @@ public class SimpleThreeStateCA {
                 state[i][j] = 0;
             }
         }   
-//        state[0][0]=2;
-//        
-//        state[0][1]=2;
-//        state[1][0]=2;
-//        state[1][1]=2;
-//
         state[2][0]=2;
         state[2][1]=2;
         state[2][2]=2;
         state[0][2]=2;
         state[1][2]=2;
         state[2][2]=2;
-        
-
         break;
 
 
@@ -107,9 +96,11 @@ public class SimpleThreeStateCA {
             if (iter == N / 2) {
                 if (doSpiralWave){
                     //spiral wave
-                    for (int i = 0; i < N / 2; i++) {
+
+                    System.out.println("TEST");
+                    for (int i = 0; i < N/2; i++) {
                         for (int j = 0; j < N/2; j++) {
-                            state[i][j] = 0;
+                            state[i][j] = 1;
                         }
                     }
                 }

@@ -30,7 +30,7 @@ public class GerhardtSchusterTyson {
         // Define initial state - excited bottom row / resting elsewhere.
         for (int i = 0; i < N; i++) {
             for (int j = 0; j < N; j++) {
-                u[i][j] = j > N - 5 ? 1 : 0;
+                u[i][j] =(( j < 1)&&(i < 1)) ? 1 : 0;
                 v[i][j] = 0;
             }
         }
@@ -97,10 +97,10 @@ public class GerhardtSchusterTyson {
     }
 
     private static double kReco(int i, int j) {
-      //  return ((R + 1) * (R + 1) - 1) - (K0_RECO + (R * (2 * R + 1) - K0_RECO) * 
-      //          ((double) (v[i][j] - V_MAX)) / (V_RECO - V_MAX));
-      return K0_RECO + (R * (2 * R + 1) - K0_RECO) * 
-                ((double) (v[i][j] - V_MAX)) / (V_RECO - V_MAX);
+        return ((R + 1) * (R + 1) - 1) - (K0_RECO + (R * (2 * R + 1) - K0_RECO) * 
+                ((double) (v[i][j] - V_MAX)) / (V_RECO - V_MAX));
+      //return K0_RECO + (R * (2 * R + 1) - K0_RECO) * 
+      //          ((double) (v[i][j] - V_MAX)) / (V_RECO - V_MAX);
     
     }
     
