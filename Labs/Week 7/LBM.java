@@ -6,6 +6,7 @@ public class LBM {
 
     //final static int NITER = 30000 ;
     final static int NITER = 5000 ;
+    
 
     final static int NX = 520, NY = 180 ;  // Lattice dimensions
     final static int Q = 9 ;  // num states
@@ -136,25 +137,17 @@ public class LBM {
                     double [] fin_ij = fin [i] [j] ;
                     double [] u_ij = u [i] [j] ;
                     if(i > 0) {
-                        float sum = 0, sum0 = 0, sum1 = 0 ;
-                        for(int d = 0; d < Q ; d++) {
-                            sum += fin_ij [d] ;
-                            sum0 += c [d] [0] * fin_ij [d] ;
-                            sum1 += c [d] [1] * fin_ij [d] ;
-                        }
-
-/*
-                        // UNROLLED version of above loop over d
                         double sum = fin_ij [0] + fin_ij [1] + fin_ij [2] +
-                                     fin_ij [3] + fin_ij [4] + fin_ij [5] +
-                                     fin_ij [6] + fin_ij [7] + fin_ij [8] ;
+                        fin_ij [3] + fin_ij [4] + fin_ij [5] +
+                        fin_ij [6] + fin_ij [7] + fin_ij [8] ;
 
-                        double sum0 = - fin_ij [3] - fin_ij [4] - fin_ij [5]
-                                      + fin_ij [6] + fin_ij [7] + fin_ij [8] ;
+                    double sum0 = - fin_ij [3] - fin_ij [4] - fin_ij [5]
+                                    + fin_ij [6] + fin_ij [7] + fin_ij [8] ;
 
-                        double sum1 = - fin_ij [1] + fin_ij [2] - fin_ij [4]
-                                      + fin_ij [5] - fin_ij [7] + fin_ij [8] ;
-*/
+                    double sum1 = - fin_ij [1] + fin_ij [2] - fin_ij [4]
+                                    + fin_ij [5] - fin_ij [7] + fin_ij [8] ;
+
+
 
                         rho [i] [j] = sum ;
                         if(sum > 0) {
@@ -192,9 +185,16 @@ public class LBM {
                     double [] fout_ij = fout [i] [j] ;
                     if(obstacle [i] [j]) {
                         // BC - no slip at obstacle
-                        for(int d = 0; d < Q ; d++) {
-                            fout_ij [d] = fin_ij [noslip [d]] ;
-                        }
+                        fout_ij [0] = fin_ij [noslip [0]] ;
+                        fout_ij [1] = fin_ij [noslip [1]] ;
+                        fout_ij [2] = fin_ij [noslip [2]] ;
+                        fout_ij [3] = fin_ij [noslip [3]] ;
+                        fout_ij [4] = fin_ij [noslip [4]] ;
+                        fout_ij [5] = fin_ij [noslip [5]] ;
+                        fout_ij [6] = fin_ij [noslip [6]] ;
+                        fout_ij [7] = fin_ij [noslip [7]] ;
+                        fout_ij [8] = fin_ij [noslip [8]] ;
+
                     }
                     else {
                         double [] feq = new double [Q] ;
@@ -208,32 +208,25 @@ public class LBM {
                                 fin_ij [i3 [p]] = feq [i3 [p]] ;
                             }
                         }
-                        for(int d = 0; d < Q ; d++) {
-                            fout_ij [d] = fin_ij [d] -
-                                    omega * (fin_ij [d] - feq [d]) ;
-                        }
-
-/*
-                        // UNROLLED version of above loop over d
                         fout_ij [0] = fin_ij [0] -
-                                      omega * (fin_ij [0] - feq [0]) ;
+                        omega * (fin_ij [0] - feq [0]) ;
                         fout_ij [1] = fin_ij [1] -
-                                      omega * (fin_ij [1] - feq [1]) ;
+                                        omega * (fin_ij [1] - feq [1]) ;
                         fout_ij [2] = fin_ij [2] -
-                                      omega * (fin_ij [2] - feq [2]) ;
+                                        omega * (fin_ij [2] - feq [2]) ;
                         fout_ij [3] = fin_ij [3] -
-                                      omega * (fin_ij [3] - feq [3]) ;
+                                        omega * (fin_ij [3] - feq [3]) ;
                         fout_ij [4] = fin_ij [4] -
-                                      omega * (fin_ij [4] - feq [4]) ;
+                                        omega * (fin_ij [4] - feq [4]) ;
                         fout_ij [5] = fin_ij [5] -
-                                      omega * (fin_ij [5] - feq [5]) ;
+                                        omega * (fin_ij [5] - feq [5]) ;
                         fout_ij [6] = fin_ij [6] -
-                                      omega * (fin_ij [6] - feq [6]) ;
+                                        omega * (fin_ij [6] - feq [6]) ;
                         fout_ij [7] = fin_ij [7] -
-                                      omega * (fin_ij [7] - feq [7]) ;
+                                        omega * (fin_ij [7] - feq [7]) ;
                         fout_ij [8] = fin_ij [8] -
-                                      omega * (fin_ij [8] - feq [8]) ;
-*/
+                                        omega * (fin_ij [8] - feq [8]) ;
+
                     }
                 }
             }
@@ -245,23 +238,15 @@ public class LBM {
             // Streaming step.
             for(int i = 0 ; i < NX ; i++) {
 
-              //  int iP1 = (i + 1) % NX ;
-              //  int iM1 = (i - 1 + NX) % NX ;
-              //  
-              //  double [] [] fin_i = fin [i] ;
-              //  double [] [] fin_iM1 = fin [iM1] ;
-              //  double [] [] fin_iP1 = fin [iP1] ;
+                int iP1 = (i + 1) % NX ;
+                int iM1 = (i - 1 + NX) % NX ;
+                
+                double [] [] fin_i = fin [i] ;
+                double [] [] fin_iM1 = fin [iM1] ;
+                double [] [] fin_iP1 = fin [iP1] ;
 
                 for(int j = 0 ; j < NY ; j++) {
                     double [] fout_ij = fout [i] [j] ;
-                    for(int d = 0; d < Q ; d++) {
-                        int i_shf = (i + c [d] [0] + NX) % NX ;
-                        int j_shf = (j + c [d] [1] + NY) % NY ;
-                        fin [i_shf] [j_shf] [d] = fout_ij [d] ;
-                    }
-
-/*
-                    // UNROLLED version of above loop over d
                     int jP1 = (j + 1) % NY ;
                     int jM1 = (j - 1 + NY) % NY ;
 
@@ -274,7 +259,7 @@ public class LBM {
                     fin_iP1 [j] [6] = fout_ij [6] ;
                     fin_iP1 [jM1] [7] = fout_ij [7] ;
                     fin_iP1 [jP1] [8] = fout_ij [8] ;
-*/
+
                 }
             }
 
@@ -316,12 +301,6 @@ public class LBM {
 
         double usqr = u0 * u0 + u1 * u1 ;
 
-/*        for(int d = 0; d < Q ; d++) {
-            int [] cEl = c [d] ;
-            double cElu = cEl [0] * u0 + cEl [1] * u1 ;
-            feq [d] = rho * w [d] * (1.0 + 3.0 * cElu +
-                                     4.5 * cElu * cElu - 1.5 * usqr) ;
-        }*/
 
         
 
