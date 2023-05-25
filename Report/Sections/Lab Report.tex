@@ -1,32 +1,47 @@
 \chapter{Lab Report}
+This report section will explore the lab work completed throughout the module and discuss skills learned through reflections on each lab. Evidence that each task has been completed is provided.
+
 \section{Lab 1 Naive Fourier Transform}
-    This week comprised of performing a Fourier Transform and Inverse Fourier Transform on a .pgm image file. The original image is of a wolf shown in Figure \autoref{fig:wolf_image}
 
-    Supporting Java classes were provided, these include Display2dFT.java, DisplayDensity.java, ReadPGM.java and SimpleFT a skeleton program to code in.
+    The first lab comprised of performing a naive discrete Fourier Transform and Inverse Fourier Transform on a .pgm image file. The Fourier analysis allows for different filters to be applied to the Image. The original image is shown in Figure \autoref{fig:wolf_image}
 
-    DisplayDensity.java displays a greyscale image from a 2D array, with smaller values dark and larger values white. ReadPGM.java parses the .pgm file for use in the skeleton program and Display2dFT.java allows the Fourier Transform output to be represented graphically, using colour to represent imaginary number components.
-    
     \begin{figure}[H]
         \centering
-        \includegraphics[width=0.8\columnwidth]{Figures/Week 1/W1-Wolf-Original.png}
-        \caption{A screenshot of the original wolf image}
-        \label{fig:wolf_image}
-        
+            \includegraphics[width=0.8\columnwidth]{Figures/Week 1/W1-Wolf-Original.png}
+            \caption{A screenshot of the original wolf image}
+            \label{fig:wolf_image}
     \end{figure}
     
+    A Fourier analysis is a mathematical technique which decomposes a waveform into its fundamental sinusoidal sub-components, allowing for the waveform to be represented in the frequency domain, as opposed to the time domain. These Fourier components represent the frequency, amplitude and phase which make up the original signal. By doing this, Fourier analysis allows image processing (among other signal processes) to be performed. The sum of the sub-components is used to recreate the original waveform. 
+    
+
+    To begin, supporting Java classes were provided, the are: 
+    \begin{itemize}
+        \item Display2dFT.java
+        \item DisplayDensity.java
+        \item ReadPGM.java
+        \item SimpleFT  
+    \end{itemize}
+        
+    'DisplayDensity.java' displays a greyscale image rendered from a 2D array of image data, with smaller values displayed as dark and larger values as light.
+    
+    'ReadPGM.java' parses the .pgm file for use in the skeleton program and 'Display2dFT.java' allows the Fourier Transform output to be represented graphically, using colour to represent imaginary number components. 'SimpleFT' is a skeleton program to code in.
+    
+
+    
     \subsection{Discrete Fourier Transform}
-    The equation shown in Figure \autoref{fig:equation-FT} needs to be implemented to perform a Discrete Fourier Transform, C is an array N, N in size.
-    \vspace{15mm}
-
-
+    To perform the Discrete Fourier Transform, the equation shown in Figure \autoref{fig:equation-FT} must be implemented, C is a 2D array of length N.
     \begin{center}
         \begin{equation}
             C_{kl} = 1/N^2 \sum_{m=0}^{N-1} \sum_{n=0}^{N-1}\ X_{mn} . e^{-2\pi i(km+nl)/N}
             \label{fig:equation-FT}
         \end{equation}  
-    \end{center}
+    \end{center}%Equation
 
-   
+    The code showing the implementation of the equation is shown in \autoref{fig:wolf-FT-code}
+  
+
+
     \begin{figure}[H]
         \centering
         \includegraphics[width=1\columnwidth]{Figures/Week 1/W1-SimpleFT-Completed-For-Loop.png}
