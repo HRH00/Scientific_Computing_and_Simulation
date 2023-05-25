@@ -9,7 +9,7 @@ public class FFTImage {
 
 
         double [] [] X = new double [N] [N] ;
-        ReadPGM.read(X, "Week 1/wolf.pgm", N) ;
+        ReadPGM.read(X, "Labs/Week 1/wolf.pgm", N) ;
 
         new DisplayDensity(X, N, "Original Image") ;
 

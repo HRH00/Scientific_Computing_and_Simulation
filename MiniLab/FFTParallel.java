@@ -7,15 +7,26 @@ public class FFTParallel extends Thread{
     public static int N = 256 ;
     public static int P = 4;
     int me;
+    static CyclicBarrier barrier = new CyclicBarrier(P);  
+    final static int B = N/P;
+    public static double [] [] X = new double [N] [N] ;
+    public static double [] [] CRe = new double [N] [N], CIm = new double [N] [N] ;
+    public static double [] [] reconRe = new double [N] [N], reconIm = new double [N] [N] ;
+    
 
-    FFTParallel(int me) {
-        this.me = me ;
-    }
     public static void main(String [] args) throws Exception {
+        long startTime = System.currentTimeMillis();
+  
+        try {
+            ReadPGM.read(X, "./Labs/Week 1/wolf.pgm", N) ;
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
-        LBMThreaded [] threads = new LBMThreaded [P] ;
+        FFTParallel [] threads = new FFTParallel [P] ;
+        
         for(int me = 0 ; me < P ; me++) {
-            threads [me] = new LBMThreaded(me) ;
+            threads [me] = new FFTParallel(me) ;
             threads [me].start() ;
         }
 
@@ -23,45 +34,39 @@ public class FFTParallel extends Thread{
             threads [me].join() ;
 
         }
-
+        //end benchmarking
+        long endTime = System.currentTimeMillis();
+        //output results
+        System.out.println("Calculation completed in "+(endTime - startTime)+" milliseconds");       
         }
 
 
         public void run(){
-        System.out.println("Thread "+" Started");
-
-        //start benchmarking
-        long startTime = System.currentTimeMillis();
-
-
-        double [] [] X = new double [N] [N] ;
-        
-        try {
-            ReadPGM.read(X, "Week 1/wolf.pgm", N) ;
-        } catch (IOException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
+        if(me==0){
+            new DisplayDensity(X, N, "Parallel Original Image") ;
         }
         
+        int begin = me * B;
+        int end = begin + B;
 
-        new DisplayDensity(X, N, "Original Image") ;
 
 
         // create array for in-place FFT, and copy original data to it
-        double [] [] CRe = new double [N] [N], CIm = new double [N] [N] ;
-        for(int k = 0 ; k < N ; k++) {
+        for(int k = begin ; k < end ; k++) {
             for(int l = 0 ; l < N ; l++) {
                 CRe [k] [l] = X [k] [l] ;
             }
         }
 
-        fft2d(CRe, CIm, 1) ;  // Fourier transform
+        sync();   
+        fft2d(CRe, CIm, 1,begin,end) ;  // Fourier transform
+        sync();
+        if(me==0){
         
-        new Display2dFT(CRe, CIm, N, "Discrete FT") ;
-
+            new Display2dFT(CRe, CIm, N, "Parallel Discrete FT") ;
+        }
         // create array for in-place inverse FFT, and copy FT to it
-        double [] [] reconRe = new double [N] [N],
-                     reconIm = new double [N] [N] ;
+       
         for(int k = 0 ; k < N ; k++) {
             for(int l = 0 ; l < N ; l++) {
                 reconRe [k] [l] = CRe [k] [l] ;
@@ -69,41 +74,81 @@ public class FFTParallel extends Thread{
             }
         }
 
-        fft2d(reconRe, reconIm, -1) ;  // Inverse Fourier transform
 
-        new DisplayDensity(reconRe, N, "Reconstructed Image") ;
-        
+        fft2d(reconRe, reconIm, -1, begin, end) ;  // Inverse Fourier transform
 
-        //end benchmarking
-        long endTime = System.currentTimeMillis();
-        //output results
-        System.out.println("Calculation completed in " +
-                           (endTime - startTime) + " milliseconds");                    
-                           
-    }
-
-
-    public static void fft2d(double[][] CRe, double [][] CIm, int number){
-       
-        //For all rows
-        for (int i = 0; i < N; i++){
-            FFT.fft1d(CRe[i], CIm[i], number);
+        if(me==0){
+            new DisplayDensity(reconRe, N, "Parallel Reconstructed Image") ;                   
+            
         }
-        
-        transpose(CRe) ;
-        transpose(CIm) ;
-
-        //all Columns transposed as rows
-        for (int i = 0; i < N; i++){
-            FFT.fft1d(CRe[i], CIm[i], number);
         }
 
-        transpose(CRe) ;
-        transpose(CIm) ;
 
-    }
 
   
+    private static void sync() {
+        }
+    public static void fft2d(double[][] CRe, double [][] CIm, int number, int begin, int end){
+       //For all rows
+        for (int i = begin; i < end; i++){
+            FFT.fft1d(CRe[i], CIm[i], number);
+        }
+        
+        sync();
+        transpose(CRe) ;
+        transpose(CIm) ;
+        sync();
+        //all Columns transposed as rows
+        for (int i = begin; i < end; i++){
+            FFT.fft1d(CRe[i], CIm[i], number);
+        }
+        sync();
+        transpose(CRe) ;
+        transpose(CIm) ;
+        sync();
+    }
+
+    static void synch() {
+    try {
+        barrier.await() ;
+    }
+    catch(Exception e) {
+        e.printStackTrace() ;
+        System.exit(1) ;
+    }
+}
+
+    FFTParallel(int me) {
+        this.me = me ;
+    }
+
+private boolean areMatricesEqual(double[][] matrix1, double[][] matrix2) {
+    if (matrix1.length != matrix2.length || matrix1[0].length != matrix2[0].length) {
+            return false; // Matrices have different dimensions, not equal
+        }
+        
+        for (int i = 0; i < matrix1.length; i++) {
+            for (int j = 0; j < matrix1[0].length; j++) {
+                if (matrix1[i][j] != matrix2[i][j]) {
+                    return false; // Elements at (i, j) differ, matrices are not equal
+                }
+            }
+        }
+        
+        return true; // Matrices are equal
+    }
+
+    // A function to copy the contents of the Arrays without altering the original reference
+    public static double [][] cloneArray(double [][] startArray){
+        double [][] copiedArray  = new double[N][N];        
+        for (int i = 0; i < N; i++){
+            for (int y = 0; y < N; y++){
+                copiedArray[i][y] = startArray[i][y];
+            }
+        }
+        return copiedArray;
+    }
+
     static void transpose(double[][] inArray) {
         double[][] temp = new double[N][N]; // Create a new array to store the transpose
 
@@ -122,5 +167,4 @@ public class FFTParallel extends Thread{
             }
         }
     }
-
 }
