@@ -1,6 +1,6 @@
 public class FFTImageFiltering {
 
-    public static int N = 600 ;
+    public static int N = 256 ;
 
     public static void main(String [] args) throws Exception {
 
@@ -9,7 +9,7 @@ public class FFTImageFiltering {
 
 
         double [] [] X = new double [N] [N] ;
-        ReadPGM.read(X, "Week 1/apollonian_gasket.ascii.pgm", N) ;
+        ReadPGM.read(X, "Labs/Week 1/wolf.pgm", N) ;
 
         new DisplayDensity(X, N, "Original Image") ;
 

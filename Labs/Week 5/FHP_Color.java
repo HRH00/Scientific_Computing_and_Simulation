@@ -5,7 +5,7 @@ public class FHP_Color {
     final static int NX = 500, NY =  500 ; // Lattice dimensions, make dimentions less than screen size
     final static int q = 6 ;  // population
     final static int NITER = 2000 ;
-    final static int DELAY = 30 ; //ms
+    final static int DELAY = 15 ; //ms
 
     final static double AMBIENT_DENSITY = 0.01;  // initial state, between 0 and 1.0.
     final static double BALLDENSITY = 0.7;  // initial state, between 0 and 1.0.

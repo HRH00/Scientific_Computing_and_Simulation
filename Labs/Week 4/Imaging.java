@@ -25,7 +25,7 @@ public class Imaging {
         // Read data from "vis-and-uv.txt"
 
         BufferedReader in = new BufferedReader(
-                new InputStreamReader(new FileInputStream("Week 4/vis-and-uv.txt"))) ;
+                new InputStreamReader(new FileInputStream("Labs/Week 4/vis-and-uv.txt"))) ;
 
         // FT of visibilities
 

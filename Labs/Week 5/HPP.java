@@ -10,7 +10,7 @@ public class HPP {
     final static int q = 4 ;  // population
      
     final static int NITER = 10000 ;
-    final static int DELAY = 100 ;
+    final static int DELAY = 500 ;
 
 
     final static double DENSITY = 1.0 ;  // initial state, between 0 and 1.0.

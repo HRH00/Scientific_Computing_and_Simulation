@@ -3,34 +3,35 @@ This report section will explore the lab work completed throughout the module an
 
 \section{Lab 1 Naive Fourier Transform}
 
-    The first lab comprised of performing a naive discrete Fourier Transform and Inverse Fourier Transform on a .pgm image file. The Fourier analysis allows for different filters to be applied to the Image. The original image is shown in Figure \autoref{fig:wolf_image}
+    The first lab comprised of performing a naive discrete Fourier Transform (DFT) and Inverse DFT on a .pgm image file. The Fourier analysis allows for different filters to be applied to the Image. The original image is shown in Figure \autoref{fig:wolf_image}
 
     \begin{figure}[H]
         \centering
-            \includegraphics[width=0.8\columnwidth]{Figures/Week 1/W1-Wolf-Original.png}
+            \includegraphics[width=0.49\columnwidth]{Figures/Week 1/W1-Wolf-Original.png}
             \caption{A screenshot of the original wolf image}
             \label{fig:wolf_image}
     \end{figure}
     
-    A Fourier analysis is a mathematical technique which decomposes a waveform into its fundamental sinusoidal sub-components, allowing for the waveform to be represented in the frequency domain, as opposed to the time domain. These Fourier components represent the frequency, amplitude and phase which make up the original signal. By doing this, Fourier analysis allows image processing (among other signal processes) to be performed. The sum of the sub-components is used to recreate the original waveform. 
+    A Fourier analysis is a mathematical technique which decomposes a waveform into its fundamental sinusoidal sub-components, allowing for the waveform to be represented in the frequency domain, as opposed to the spatial domain. These Fourier components represent the frequency, amplitude and phase which make up the original signal. By doing this, Fourier analysis allows image processing (among other signal processes) to be performed. The sum of the sub-components is used to recreate the original waveform. 
     
 
-    To begin, supporting Java classes were provided, the are: 
+    To begin, supporting Java classes were provided, they are: 
     \begin{itemize}
-        \item Display2dFT.java
         \item DisplayDensity.java
         \item ReadPGM.java
-        \item SimpleFT  
+        \item Display2dFT.java
+        \item SimpleFT.java
     \end{itemize}
         
     'DisplayDensity.java' displays a greyscale image rendered from a 2D array of image data, with smaller values displayed as dark and larger values as light.
     
-    'ReadPGM.java' parses the .pgm file for use in the skeleton program and 'Display2dFT.java' allows the Fourier Transform output to be represented graphically, using colour to represent imaginary number components. 'SimpleFT' is a skeleton program to code in.
+    'ReadPGM.java' parses the .pgm file for use in the skeleton program and 'Display2dFT.java' allows the Fourier Transform (FT) output to be represented graphically, using colour to represent imaginary number components. 'SimpleFT' is a skeleton program to code in.
     
 
     
     \subsection{Discrete Fourier Transform}
-    To perform the Discrete Fourier Transform, the equation shown in Figure \autoref{fig:equation-FT} must be implemented, C is a 2D array of length N.
+    To perform the DFT, the equation shown in \autoref{fig:equation-FT} must be implemented, C is a 2D array of length N.
+    
     \begin{center}
         \begin{equation}
             C_{kl} = 1/N^2 \sum_{m=0}^{N-1} \sum_{n=0}^{N-1}\ X_{mn} . e^{-2\pi i(km+nl)/N}
@@ -38,143 +39,151 @@ This report section will explore the lab work completed throughout the module an
         \end{equation}  
     \end{center}%Equation
 
-    The code showing the implementation of the equation is shown in \autoref{fig:wolf-FT-code}
-  
-
-
+    Implementation of the equation is shown in \autoref{fig:wolf-FT-code}. An array called 'X' stored the original .pgm data. The program decomposes the original frequencies into two arrays, this is because the process generates complex numbers. The imaginary component of the complex number is stored in 'CIm' while the real component is stored in 'CRe'. 
+ 
     \begin{figure}[H]
         \centering
         \includegraphics[width=1\columnwidth]{Figures/Week 1/W1-SimpleFT-Completed-For-Loop.png}
         \caption{A screenshot of the implementation of the Fourier Transform}
         \label{fig:wolf-FT-code}
     \end{figure}
+
+    The graphical representation of the Fourier Analysis is shown in \autoref{fig:wolf-DFT}. The 'Display2dFT' class has been used to implement this, the colour of each pixel represents the imaginary component.
     
     \begin{figure}[H]
         \centering
-        \includegraphics[width=0.8\columnwidth]{Figures/Week 1/W1-FT.png}
+        \includegraphics[width=0.49\columnwidth]{Figures/Week 1/W1-FT.png}
         \caption{A screenshot of the Discrete Fourier Transform graphical output}
         \label{fig:wolf-DFT}
     \end{figure}
     
     
     \subsection{Inverse Discrete Fourier Transform}
+    The Inverse function is used to reconstruct the image from the frequency domain representation, by converting it back to a spatial domain. The equation \autoref{fig:equation-InverseFT} must be implemented to do this. 
 
-
-        \begin{center}
+    \begin{center}
         \begin{equation}
             X_{mn} = \sum_{k=0}^{N-1} \sum_{l=0}^{N-1}\ C_{kl} . e^{2\pi i(km+nl)/N}
             \label{fig:equation-InverseFT}
         \end{equation}  
         \end{center}
-
+        
+    The code of the implementation is shown in \autoref{fig:inverse-DFT-Code}. The reconstructed image array is called 'reconstructed'.  
+    In this code, pixel value normalisation must be performed to set each pixel to a value which the 'DisplayDensity' class can output correctly. 
         
         \begin{figure}[H]
             \centering
             \includegraphics[width=0.9\columnwidth]{Figures/Week 1/W1-SimpleFT-InverseDFT-Implementation.png}
-            \caption{A screenshot of the java inverse DFT implementation}
+            \caption{A screenshot of the Java inverse DFT implementation}
             \label{fig:inverse-DFT-Code}
     \end{figure}
+
+    All the graphical outputs of the program are shown in \autoref{fig:inverse-DFT-Images-Output}, the reconstructed image is on the right side. 
     
-        \begin{figure}[H]
+    \begin{figure}[H]
             \centering
             \includegraphics[width=0.8\columnwidth]{Figures/Week 1/W1-SimpleFT-InverseDFT-Graphical-Outputs.png}
             \caption{Graphical output of the program - inverse DFT reconstruction on the right side}
             \label{fig:inverse-DFT-Images-Output}
     \end{figure}
+
+    While the outputted images are the same as the 'DisplayDensity' class essentially rounds values, the values in the new 'reconstructed' array deviate from the original 'X' array. This is due to the primitive double datatype in Java being a floating-point representation, causing some precision to be lost during calculations - this is called a floating-point error.
     
-        \begin{figure}[H]
-            \centering
-            \includegraphics[width=1\columnwidth]{Figures/Week 1/W1-SimpleFT-InverseDFT-Test-1.0-code.png}
-            \caption{A screenshot of the testing code}
-            \label{fig:Testing-Code}
+    \autoref{fig:Testing-Code} and \autoref{fig:Testing-Code-output} show the code and console output for detecting incorrectly reconstructed values. The 'reconstructed' values are close to the original.   
+    
+    \begin{figure}[H]
+        \centering
+        \includegraphics[width=1\columnwidth]{Figures/Week 1/W1-SimpleFT-InverseDFT-Test-1.0-code.png}
+        \caption{A screenshot of the testing code}
+        \label{fig:Testing-Code}
     \end{figure}
-    
-        \begin{figure}[H]
+    \begin{figure}[H]
             \centering
             \includegraphics[width=.49\columnwidth]{Figures/Week 1/W1-SimpleFT-InverseDFT-Test-1.0-Output.png}
             \caption{A screenshot of the testing code output}
             \label{fig:Testing-Code-output}
         \end{figure}
-        
-        \begin{figure}[H]
+
+    \autoref{fig:floating-Point-Fix}, \autoref{fig:floating-Point-Fixed-test} and \autoref{fig:floating-Point-Fixed-CLI-Output} show that in this instance, the error can be completely removed simply by rounding the reconstructed value to the nearest integer.
+    \newpage
+    \begin{figure}[H]
+        \centering
+        \includegraphics[width=1\columnwidth]{Figures/Week 1/W1-SimpleFT-InverseDFT-Floating-Point-Fix.png}
+        \caption{A screenshot of code to fix floating point error}
+        \label{fig:floating-Point-Fix}
+    \end{figure}
+    \begin{figure}[H]
             \centering
-            \includegraphics[width=1\columnwidth]{Figures/Week 1/W1-SimpleFT-InverseDFT-Floating-Point-Fix.png}
-            \caption{A screenshot of code to fix floating point error}
-            \label{fig:floating-Point-Fix}
-        \end{figure}
-        
-    
-        \begin{figure}[H]
-            \centering
-            \includegraphics[width=.49\columnwidth]{Figures/Week 1/W1-SimpleFT-InverseDFT-Test-2.0-code.png}
+            \includegraphics[width=1\columnwidth]{Figures/Week 1/W1-SimpleFT-InverseDFT-Test-2.0-code.png}
             \caption{A screenshot of code to test the floating point error fix}
             \label{fig:floating-Point-Fixed-test}
-        \end{figure}
-    
-        \begin{figure}[H]
+        \end{figure}   
+    \begin{figure}[H]
             \centering
             \includegraphics[width=0.8\columnwidth]{Figures/Week 1/W1-SimpleFT-InverseDFT-Test-2.0-CLI-Output.png}
             \caption{A screenshot of console output showing floating point error test has passed}
             \label{fig:floating-Point-Fixed-CLI-Output}
         \end{figure}
         
-        \begin{figure}[H]
-            \centering
-            \includegraphics[width=0.8\columnwidth]{Figures/Week 1/W1-SimpleFT-Completed-For-Loop.png}
-            \caption{A screenshot of graphical image reconstruction floating point error fix}
-            \label{fig:floating-Point-Fixed-Graphical-Output}
-        \end{figure}
-    
-    
-    \subsection{Filtering}
    
+    \newpage
+    \subsection{Filtering}
+    Now that the data is in the frequency domain, performing filtering operations is simple. 
+    
     \subsubsection{Low Pass Filter}
-          \begin{figure}[H]
+    A low pass filter removes frequencies above a cutoff value allowing low frequencies to pass through. In this instance, the cutoff was set to $N/8$ or $256/8$. \autoref{fig:Low-Pass-Filter-code} show that any values greater than the cutoff are set to $0$. The absolute value of each input value is used to remove the sign from the number, allowing the conditional statements to function correctly. 
+    
+    \begin{figure}[H]
         \centering
         \includegraphics[width=0.8\columnwidth]{Figures/Week 1/W1-Low-Pass-Code.png}
         \caption{Screenshot of FT low pass filter code}
         \label{fig:Low-Pass-Filter-code}
       \end{figure}
 
-      \begin{figure}[H]
+    \autoref{fig:Low-Pass-Filter-Truncated} shows the truncated FT graphic, note the large black area which represents the removed frequencies. In \autoref{fig:Low-Pass-Filter-Image}, a lot of detail is clearly missing from the image.
+    \begin{figure}[H]
         \centering
-        \includegraphics[width=0.8\columnwidth]{Figures/Week 1/W1-Low-Pass-Truncated.png}
+        \includegraphics[width=0.49\columnwidth]{Figures/Week 1/W1-Low-Pass-Truncated.png}
         \caption{Screenshot of the low pass filter truncated FT graphical output}
         \label{fig:Low-Pass-Filter-Truncated}
       \end{figure}
-
-      \begin{figure}[H]
+    \begin{figure}[H]
         \centering
-        \includegraphics[width=0.8\columnwidth]{Figures/Week 1/W1-Low-Pass-Reconstructed.png}
+        \includegraphics[width=0.49\columnwidth]{Figures/Week 1/W1-Low-Pass-Reconstructed.png}
         \caption{Screenshot of the low pass filter reconstructed image output}
         \label{fig:Low-Pass-Filter-Image}
       \end{figure}
+
     
-    
+    \newpage    
     \subsubsection{High Pass Filter}
+    Next, a high pass filter was implemented. This filter does the opposite of the previous one and removes frequencies below a cutoff value. \autoref{fig:High-Pass-Filter-code} shows the implementation is similar to the low pass filter. The cutoff value was set to $N/128$ and again sets values to $0$. 
     
-      \begin{figure}[H]
+    \begin{figure}[H]
         \centering
-        \includegraphics[width=1\columnwidth]{Figures/Week 1/W1-High-Pass-Code.png}
+        \includegraphics[width=.9\columnwidth]{Figures/Week 1/W1-High-Pass-Code.png}
         \caption{Screenshot of FT high pass filter code}
         \label{fig:High-Pass-Filter-code}
-      \end{figure}
+    \end{figure}
+    
 
+    \autoref{fig:High-Pass-Filter-Truncated} shows the truncated FT and \autoref{fig:High-Pass-Filter-Image} shows the final image.
       \begin{figure}[H]
         \centering
-        \includegraphics[width=0.8\columnwidth]{Figures/Week 1/W1-High-Pass-Truncated.png}
+        \includegraphics[width=0.49\columnwidth]{Figures/Week 1/W1-High-Pass-Truncated.png}
         \caption{Screenshot of the high pass filter truncated FT graphical output}
         \label{fig:High-Pass-Filter-Truncated}
       \end{figure}
 
       \begin{figure}[H]
         \centering
-        \includegraphics[width=0.8\columnwidth]{Figures/Week 1/W1-High-Pass-Reconstructed.png}
+        \includegraphics[width=0.49\columnwidth]{Figures/Week 1/W1-High-Pass-Reconstructed.png}
         \caption{Screenshot of the high pass filter reconstructed image output}
         \label{fig:High-Pass-Filter-Image}
       \end{figure}
 
       \subsubsection{Combined Filters}
+      Finally, \autoref{fig:Combined-Filters} shows both filters combined. This has caused some detail in the image to be lost and the visible noise to be reduced, however, new artefacts have been produced.
         \begin{figure}[H] 
             \centering
             \includegraphics[width=0.8\columnwidth]{Figures/Week 1/W1-Both-Filters.png}
@@ -186,18 +195,25 @@ This report section will explore the lab work completed throughout the module an
 
 \newpage
 \section{Lab 2 - Fast Fourier Transform}
-\newpage
-This week a Fast Fourier Transform was implemented and benchmarked. Each program was run three times to compare processing speeds. 
+This week, a Fast Fourier Transform (FFT) was implemented and benchmarked against the previous FT implementation. 
+
+The time complexity for the original FT is $O(N^2)$, and the time complexity for the FFT is $O(N log N)$, this is a massive speedup. 
+This is achieved by taking advantage of symmetries which occur in the calculation, reducing the total number of calculations required. These symmetries, or twiddle factors, are coefficients which reoccur on every even or every odd index. It is by reusing the calculated twiddle factors that allow the FT to be completed in less time. This is the approach taken in the  Cooley–Tukey FFT algorithm using recursion to divide the problem.
 
 \subsection{2D FFT Implementation}
-To implement a 2D FFT using the fft1d method from the sample FFT class, a helper function was implemented to transpose the 2D arrays. This is show in \autoref{fig:transpose-code} 
+
+Java support classes 'FFT.java' and 'FFTImageFiltering.java' was provided. The first class contains code to perform a one-dimensional FFT and its inverse, the latter is a skeleton program to code in. 
+
+To implement a 2D FFT using the fft1d method from the 'FFT' class, a helper function was implemented to transpose the 2D arrays. This is shown in \autoref{fig:transpose-code}. 
 
     \begin{figure}[H] 
         \centering
         \includegraphics[width=0.8\columnwidth]{Figures/Week 2/Transpose Implementation.png}
-        \caption{Screenshot of Java code showing the transpose function implementation}
+        \caption{Screenshot of Java code showing the transpose implementation}
         \label{fig:transpose-code}
     \end{figure}
+
+\autoref{fig:2dFFT-code} shows the implementation of 2D-FFT from the 1D-FFT, a loop iterates over the input arrays 'CRe' and 'CIm', performing an FFT on each row before transposing both arrays and repeating once again. This ensures that the FFT is applied to both axes of the input arrays.
 
     \begin{figure}[H] 
         \centering
@@ -206,9 +222,10 @@ To implement a 2D FFT using the fft1d method from the sample FFT class, a helper
         \label{fig:2dFFT-code}
     \end{figure}
 
-
 \subsection{Benchmarking}
-Benchmarking code was added to the FT and FFT programs to compare run times. Each program from week 1 had its 'System.out.println' removed to allow for more accurate results as the method has a large overhead to call.
+
+
+Benchmarking code was added to the FT and FFT programs to compare run times. Each program from Lab 1 had its 'System.out.println' removed to allow for more accurate results, as the method has a large overhead when called. \autoref{fig:bench-code-start} and \autoref{fig:bench-code-end} show the benchmarking code implementation and \autoref{fig:SimpleFT-Bench} shows the console output when run.
 
 
     \begin{figure}[H] 
@@ -217,45 +234,62 @@ Benchmarking code was added to the FT and FFT programs to compare run times. Eac
         \caption{Screenshot of Java Benchmarking code at start of main}
         \label{fig:bench-code-start}
     \end{figure}
-    
     \begin{figure}[H] 
         \centering
         \includegraphics[width=0.8\columnwidth]{Figures/Week 2/Bench code end.png}
         \caption{Screenshot of Java Benchmarking code at end of main}
         \label{fig:bench-code-end}
     \end{figure}
-
-
-
-
     \begin{figure}[H] 
         \centering
         \includegraphics[width=0.8\columnwidth]{Figures/Week 2/SimpleFT Bench.png}
         \caption{Screenshot of the Console output from SimpleFT Benchmarking code}
         \label{fig:SimpleFT-Bench}
     \end{figure}
-*
+
+    Four programs were run 3 times each, these include two versions of the both naive-FT and FFT - one with no filtering operations and one with a high and low pass filter implemented. The results from the benchmarking is shown in \autoref{tab:W2-bench-results-table}. 
+    \begin{table}[htbp]
+      \centering
+      \resizebox{1\columnwidth}{!}{\begin{tabular}{|c|c|c|c|c|}
+         \hline
+        \textbf{Run Number} & \textbf{SimpleFT (ms)} & \textbf{SimpleFT With Filters (ms)} & \textbf{Fast FT (ms)} & \textbf{Fast FT With filters (ms)}\\
+        \hline
+        Run 1 & 333023 & 673758 & 816 & 789\\
+        \hline
+        Run 2 & 315853 & 590674 & 600 & 971\\
+        \hline
+        Run 3 & 297395 & 524380 & 668 & 954\\
+        \hline
+        Mean Average & 315424 & 596271 & 695 & 905\\
+        \hline
+      \end{tabular}}
+      \caption{Lab 2 FFT Benchmarking Results}
+      \label{tab:W2-bench-results-table}
+    \end{table}
+    
     \begin{figure}[H] 
         \centering
-        \includegraphics[width=0.8\columnwidth]{Figures/Week 2/SimpleFTFilters Bench.png}
-        \caption{Screenshot of the output from SimpleFTFilters Benchmarking code}
-        \label{fig:SimpleFTFilters-Bench}
+        \includegraphics[width=0.8\columnwidth]{Figures/Week 2/FT vs FFT Bench marking.png}
+        \caption{Screenshot of FFT vs FT benchmark results graph}
+        \label{fig:W2-Benchmarking-Graph}
     \end{figure}
 
+    In all cases, the FFT outperformed the FT by a large margin. This is illustrated in \autoref{fig:W2-Benchmarking-Graph}, showing that the FFT program has a much fastetr run time than the previous implementation, this remained true for all runs of the programs. Please note, the graph's vertical scale is logarithmic to allow for the short run times to be visible.
+    
+    The mean average of the three runs is used in the following calculations. The FFT program with no filtering allowed for a speedup of  $315424 / 695 = 53.85$.The programs with filtering allowed for a speedup of $596271 / 905 = 658.86$. In both cases, the programs ran much faster when using the FFT implementation, caused by the efficient divide-and-conquer approach method used by the FFT causes the relatively low time complexity.
 
-    \begin{figure}[H] 
-        \centering
-        \includegraphics[width=1\columnwidth]{Figures/Week 2/Benchmarking results.png}
-        \caption{Screenshot of the bench-marking results table}
-        \label{fig:bench-results-table}
-    \end{figure}
-        
-
+    Overall the FFT is a far better approach than the naive implementation as it can perform an FT in a fraction of the time.
+    
+\newpage
 \section{Lab 3 - CT Scanner}
 
-This lab two classes were supplied, DisplaySinogramFT.java outputted the SinogramFT as an image and Sinogram.java contained boilerplate code which includes the initial body slice model. It outputs the initial model and calculated sinogram before outputting a back-projected sinogram. The back-projected image contains very little detail, this is shown on the right side of \autoref{fig:W3-initial-output}.
+This lab explores the computations required for a CT scanner, an FT and filtering is applied to a sinogram to recover visual data. A Radon Transform (RT) (\textcite{4307775} was implemented to calculate the densities for the back-projected sinogram. 
 
-The initial source model is the 'Shepp Logan Phantom' \textcite{6499235}, which is made of a series of ellipses representing different densities. The class performs an integral Radon Transform on the model densities to produce the Sinogram, the inversion of this transform will produce the final image. 
+An RT is similar to an FT, however, it produces a set of line integrals or projections which capture the distribution of linear structures within the image. An RT takes two parameters angle '$\theta$' and offset 'r', where '$\theta$' is the orientation angle of the detector assembly and 'r' is the offset of a single detector to the assembly. The transform differs from an FT as it outputs a set of line integrals that capture the distribution of linear structures within the image, rather than frequency information.
+
+Two classes were supplied, 'DisplaySinogramFT.java' rendered the Sinogram-FT as an image and 'Sinogram.java' contains a skeleton program which includes the initial body slice model. It outputs the initial model and calculated sinogram before outputting a back-projected sinogram. The back-projected image contains very little detail, this is shown on the right side of \autoref{fig:W3-initial-output}. The back-projected sinogram image is simply and inverse RT.
+
+The initial source model is the 'Shepp Logan Phantom' \textcite{6499235}, which is made of a series of ellipses representing different densities. The code performs an RT on the model densities to produce the Sinogram, the inversion of this transform will produce the final image. 
 
 
 \begin{figure}[H] 
@@ -271,13 +305,13 @@ Filtering the sinogram is required to make details more visible in the back-proj
 
 \begin{figure}[H] 
     \centering
-    \includegraphics[width=0.9\columnwidth]{Figures/Week 3/initial-FFTpng.png}
+    \includegraphics[width=0.49\columnwidth]{Figures/Week 3/initial-FFTpng.png}
     \caption{Screenshot of the graphical output of the initial Sinogram Fourier Transform}
     \label{fig:W3-initial-FT}
 \end{figure}
 \begin{figure}[H] 
     \centering
-    \includegraphics[width=0.49\columnwidth]{Figures/Week 3/initial-FFT-code.png}
+    \includegraphics[width=0.9\columnwidth]{Figures/Week 3/initial-FFT-code.png}
     \caption{Screenshot of the code performing the Sinogram Fourier Transform}
     \label{fig:W3-initial-FT-code}
 \end{figure}
@@ -286,9 +320,10 @@ Filtering the sinogram is required to make details more visible in the back-proj
 
 
 \subsection{Applying a Simple Ramp Filter}
-Next, the filter must be applied to the Fourier Transform data. A simple Ramp filter has been implemented. A ramp filter is a type of high-pass filter which reduces low frequencies to decrease blurring. The code performing this is shown in \autoref{fig:W3-ramp-code}. For each element, the code generates a $|K|$ value which is then multiplied to both the real and imaginary numerical components of the Fourier Transform.
+Next, the filter must be applied to the Fourier Transform data. A simple Ramp filter has been implemented. A ramp filter is a type of high-pass filter which reduces low frequencies to decrease blurring. The code is shown in \autoref{fig:W3-ramp-code}. For each element, the code generates a $|K|$ value which is then multiplied by both the real and imaginary numerical components of the Fourier Transform.
 
-The value of 'kSigned' is set to 'iK' if the value is $iK <= N/2$, otherwise, the value is set to $iK-N$.   
+The value of 'kSigned' is set to 'iK' if the value is $iK <= N/2$, otherwise, the value is set to $iK-N$.
+
 \begin{figure}[H] 
     \centering
     \includegraphics[width=0.9\columnwidth]{Figures/Week 3/ramp-filter-code.png}
@@ -379,16 +414,127 @@ Implementation is shown in \autoref{fig:W3-cos-filter-code}.
 \newpage
 \section{Lab 4 - Radio Interferometry}
 
+Radio Interferometry is a technique used in Astrophotography which makes use of multiple radio telescopes spread over a large area to gather data. The data is then processed afterwards to produce an image.
+
+These are sometimes referred to as software telescopes, as they require a great deal of processing to combine signals to produce an image. To produce an image, two or more signals are combined constructively or destructively (depending on their relative phase). These telescopes are spread over a large distance and connected through an interferometric array \textcite{Borcea_2005}, radiowaves emitted by celestial objects are detected and stored for later processing. To 'aim' at an object, time delays are inserted into all the signals causing signals from a single direction to be in phase with each other.
+
+Visibilities must be calculated to produce an image, visibility is a correlation function between signals arriving in two receivers. To calculate the visibility, the signals are first multiplied together and averaged over a fixed amount of time. This allows the cosine correlator $Rc$ to be obtained. Then a 90\textdegree phase shift is introduced to a single signal, the signals are multiplied and averaged over time to obtain the Sine correlator $Rs$.
+
+Finally, the visibility between the antennas is $V =Rc - iRs$
+
+The sky intensity is the amount of radiowaves received from a particular direction in the sky. If $l, m$ are direction cosines relating to a position in the sky from a fixed origin, then the sky intensity function of position can be denoted as $I(l,m)$.
+
+If $(u, v)$ are the displacement of two telescopes, then the sky intensity can be calculated using the van Cittert-Zernike \autoref{eq:van-Cittert-Zernike}, this is an FT.
+
+\begin{equation}
+V(u, v) \propto \sum_{l} \sum_{m} I(l, m) \cdot e^{-2\pi i(ul + vm)}
+\label{eq:van-Cittert-Zernike}
+\end{equation}
+
+To recover the image we perform an inverse FT 
+
+\begin{equation}
+I(l, m) \propto \sum_{u=-\infty}^{+\infty} \sum_{v=-\infty}^{+\infty} V(u, v) \cdot e^{2\pi i(ul + vm)}
+\label{eq:van-Cittert-Zernike-inverse}
+\end{equation}
+
+This process can be used to create a 'dirty image', in industry, extra processing would be performed on the data to improve the image quality and accuracy. To gather extra data points, multiple telescopes are used in addition to sampling the sky at different times when the telescopes are in a different position (because of the planet's rotation).
+
+A class 'Imaging.java' was provided, it processes a LOFAR data set to produce a point map and an image. \autoref{fig:W4-spiral-being-made} shows points being plotted as the program ran, on the left is at the beginning, a swirl can be seen  as time goes on. Once the program loop has run, \autoref{fig:W4-image-final-swirl} is drawn. It shows the swirls calculated, \autoref{fig:W4-grey-scale} shows a greyscale image of this.  
+
+
+\begin{figure}[H] 
+    \centering
+    \includegraphics[width=0.49\columnwidth]{Figures/Week 4/spiral being made.png}
+    \caption{Screenshot of the graphical output from Imaging.java }
+    \label{fig:W4-spiral-being-made}
+\end{figure}
+\begin{figure}[H] 
+    \centering
+    \includegraphics[width=0.49\columnwidth]{Figures/Week 4/Grey-scale-img.png}
+    \caption{Screenshot of the greyscale graphical output Imaging.java}
+    \label{fig:W4-grey-scale}
+\end{figure}
+
+\begin{figure}[H] 
+    \centering
+    \includegraphics[width=0.49\columnwidth]{Figures/Week 4/Final swirls img.png}
+    \caption{Screenshot of the final graphical output of Imaging.java}
+    \label{fig:W4-image-final-swirl}
+\end{figure}
 
 \newpage
 \section{Lab 5 Lattice gas models}
-In this lab, Lattice gas cellular automata were explored in this lab.
+Lattice gas models (LGM) are explored in this lab. An LGM is a cellular automation used to simulate fluid dynamics on a lattice grid.
+
+
+
+\subsection{HPP}
+A basic Hard-Particle Packing (HPP) model was implemented, each cell on the lattice contains a state of a particle which represents one of four directions the particle is travelling in.
+
+There are two steps in the HPP model which are run in a loop. In each iteration, the 'streaming' step simply moves a particle one cell in the direction it has inertia in (defined by its state) and the 'collision' step updates the particle state if there is a collision. In a collision, each particle's direction is set to be perpendicular to its previous direction. Each iteration represents one 'step' in time
+
+A skeleton program called 'HPP.java' was provided. The implementation of the streaming and collision step is shown in \autoref{fig:W5-streaming-code} and \autoref{fig:W5-collision-step-code} respectively.
+
+
+\begin{figure}[H] 
+    \centering
+    \includegraphics[width=0.59\columnwidth]{Figures/Week 5/HPP Streaming Step code.png}
+    \caption{Screenshot of the HPP Streaming step code}
+    \label{fig:W5-streaming-code}
+\end{figure}
+
+\begin{figure}[H] 
+    \centering
+    \includegraphics[width=0.59\columnwidth]{Figures/Week 5/HPP Collision Step code.png}
+    \caption{Screenshot of the HPP Collision step code}
+    \label{fig:W5-collision-step-code}
+\end{figure}
+
+The code was tested to ensure collisions were working using two particles in both axis directions. \autoref{fig:W5-hpp-before} and \autoref{fig:W5-hpp-after} show multiple particles before and after collision respectively.
+
+
+\begin{figure}[H] 
+    \centering
+    \includegraphics[width=0.49\columnwidth]{Figures/Week 5/HPP Mega Collision before.png}
+    \caption{Screenshot of HPP model before particle collision}
+    \label{fig:W5-hpp-before}
+\end{figure}
+
+
+\begin{figure}[H] 
+    \centering
+    \includegraphics[width=0.49\columnwidth]{Figures/Week 5/HPP Mega Collision After.png}
+    \caption{Screenshot of HPP model after particle collision}
+    \label{fig:W5-hpp-after}
+\end{figure}
+%
+%
+%\begin{figure}[H] 
+%    \centering
+%    \includegraphics[width=0.49\columnwidth]{Figures/Week 5/}
+%    \caption{Screenshot of the }
+%    \label{fig:W5}
+%\end{figure}
+
+\subsection{FHP}
+
+\begin{figure}[H] 
+    \centering
+    \includegraphics[width=0.9\columnwidth]{Figures/Week 5/FHP Initial Run .png}
+    \caption{Screenshot of the initial FHP graphical output}
+    \label{fig:W5-fhp-initial}
+\end{figure}
+\subsection{FPP Colour}
+\subsection{FPP Large Lattice}
+
 
 
 
 
 \newpage
 \section{Lab 6 - Excitable Media} 
+\newpage
 \subsection{3 State CA}
 This lab consisted of simulating excitable media using cellular automata (CA). To begin, a three-state CA was used to simulate waves. The initial spiral wave output is shown in figure \autoref{fig:W6-initial-3CA}.
 
@@ -447,7 +593,7 @@ A similar approach was created to allow the user to define the 'doSpiralWave' va
     \caption{Screenshot of 3-State CA simulation starting in the middle of the grid}
     \label{fig:W6-3CA-start-middle}
 \end{figure}
-
+\newpage
 \subsection{GST}
 Next, a Gerhardt-Schuster-Tyson model was implemented to create a spiral and plane wave. The highlighted nested for loop shown in \autoref{fig:W6-GST-plane-code} was removed to create a plane wave simulation. \autoref{fig:W6-GST-side-by-side-output} shows both spiral (left side) and plane wave (right side) simulation outputs.
 
@@ -607,3 +753,4 @@ The graphical output for the program is shown in \autoref{fig:W6-4CA-output}.
 \section{Lab 8}
 \newpage
 \section{Lab 10}
+

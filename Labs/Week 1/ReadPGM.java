@@ -9,7 +9,7 @@ public class ReadPGM {
 
     public static void main(String [] args) throws Exception {
 
-        String fileName = args.length > 0 ? args [0] : "Week 1/wolf.pgm" ;
+        String fileName = args.length > 0 ? args [0] : "Labs/Week 1/wolf.pgm" ;
 
         
         double [] [] density = new double [N] [N] ;

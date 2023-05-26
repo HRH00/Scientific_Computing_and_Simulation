@@ -10,7 +10,8 @@ public class SimpleFTBenchmarked {
         
 
         double [] [] X = new double [N] [N] ;
-        String FileName = "Week 1/wolf.pgm";
+        String FileName = "Labs/Week 1/wolf.pgm";
+
 
         ReadPGM.read(X,FileName,N) ;
 
