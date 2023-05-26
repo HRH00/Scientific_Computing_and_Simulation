@@ -464,9 +464,9 @@ A class 'Imaging.java' was provided, it processes a LOFAR data set to produce a 
 \end{figure}
 
 \newpage
-\section{Lab 5 Lattice gas models}
-Lattice gas models (LGM) are explored in this lab. An LGM is a cellular automation used to simulate fluid dynamics on a lattice grid.
-
+\section{Lab 5 - Lattice gas models}
+Lattice gas models (LGM) are explored in this lab. An LGM is a cellular automata (CA) used to simulate fluid dynamics on a lattice grid.
+Navier-Stokes is a differential equation which describes fluid flow, it is derived from Newton's second law of motion and can be used to accurately simulate particle collision. LGMs can be used to approximate this equation.
 
 
 \subsection{HPP}
@@ -492,32 +492,23 @@ A skeleton program called 'HPP.java' was provided. The implementation of the str
 \end{figure}
 
 The code was tested to ensure collisions were working using two particles in both axis directions. \autoref{fig:W5-hpp-before} and \autoref{fig:W5-hpp-after} show multiple particles before and after collision respectively.
-
-
 \begin{figure}[H] 
     \centering
     \includegraphics[width=0.49\columnwidth]{Figures/Week 5/HPP Mega Collision before.png}
     \caption{Screenshot of HPP model before particle collision}
     \label{fig:W5-hpp-before}
 \end{figure}
-
-
 \begin{figure}[H] 
     \centering
     \includegraphics[width=0.49\columnwidth]{Figures/Week 5/HPP Mega Collision After.png}
     \caption{Screenshot of HPP model after particle collision}
     \label{fig:W5-hpp-after}
 \end{figure}
-%
-%
-%\begin{figure}[H] 
-%    \centering
-%    \includegraphics[width=0.49\columnwidth]{Figures/Week 5/}
-%    \caption{Screenshot of the }
-%    \label{fig:W5}
-%\end{figure}
+
 
 \subsection{FHP}
+An FHP model was implemented, it's more realistic than HPP and provides many more states representing the particle direction. The model is based on the Boltzmann equation which describes the behaviour of dilute gas particles. An FHP class was provided, \autoref{fig:W5-fhp-initial} shows the initial output of the program.
+
 
 \begin{figure}[H] 
     \centering
@@ -525,18 +516,181 @@ The code was tested to ensure collisions were working using two particles in bot
     \caption{Screenshot of the initial FHP graphical output}
     \label{fig:W5-fhp-initial}
 \end{figure}
-\subsection{FPP Colour}
-\subsection{FPP Large Lattice}
+
+\subsubsection{FPP Colour}
+To make the particle densities clearer, a colouring scheme was implemented to set pixel colour based on particle density. The code implementing the colour setting is shown in \autoref{fig:W5-FHP-Color-code}. The code now counts nearby particles 3 indexes away. Colour intensity correlates with density, the colour changes per \autoref{tab:w5-colour-table}. 
+
+\begin{table}[htbp]
+  \centering
+  \renewcommand{\arraystretch}{1.2}
+  \begin{tabular}{|c|c|}
+    \hline
+    \textbf{Colour} & \textbf{Particle Density} \\
+    \hline
+    Black & No particles \\
+    \hline
+    Green & Low Density \\
+    \hline
+    Yellow & Medium Density \\
+    \hline
+    Red & Most dense \\
+    \hline
+  \end{tabular}
+  \caption{FHP Colours based on density}
+  \label{tab:w5-colour-table}
+\end{table}
+.
+\begin{figure}[H] 
+    \centering
+    \includegraphics[width=0.9\columnwidth]{Figures/Week 5/Color/FHP Color color code.png}
+    \caption{Screenshot of the FHP Colouring scheme code}
+    \label{fig:W5-FHP-Color-code}
+\end{figure}
+
+\autoref{fig:W5-FHP-Color-init} shows the grid initialisation code, random particle values are set and dense circles of particles set.
+
+\begin{figure}[H] 
+    \centering
+    \includegraphics[width=0.9\columnwidth]{Figures/Week 5/Color/FHP color init.png}
+    \caption{Screenshot of the FHP colour grid initilisation}
+    \label{fig:W5-FHP-Color-init}
+\end{figure}
+
+\autoref{fig:W5-color-before} and \autoref{fig:W5-color-after} show the large balls of particles before and after collision respectively.
+
+\begin{figure}[H] 
+    \centering
+    \includegraphics[width=0.49\columnwidth]{Figures/Week 5/Color/FHP Color 1.png}
+    \caption{Screenshot of the FHP graphical output before collision}
+    \label{fig:W5-color-before}
+\end{figure}
+\begin{figure}[H] 
+    \centering    
+    \includegraphics[width=0.49\columnwidth]{Figures/Week 5/Color/FHP Color 2.png}
+    \caption{Screenshot of the FHP graphical output after collision}
+    \label{fig:W5-color-after}
+\end{figure}
+
+  
 
 
+
+\newpage
+\subsubsection{FPP Large Lattice}
+The previous program was extended to allow user-defined parameters \autoref{tab:FHP-large-variables}, allowing for control of how many particles are grouped together in each cell.
+ \begin{table}[htbp]
+      \centering
+      \resizebox{1\columnwidth}{!}{\begin{tabular}{|c|c|}
+    \hline
+    \textbf{Varible Name} & \textbf{Usage} \\
+
+    \hline
+    Lattice{\_}Size & Defines the Lattice size \\
+    \hline
+    Display{\_}Size & Defines the display size, the number of particles in a group = Lattice{\_}Size/Display{\_}Size \\
+    \hline
+    AMBIENT{\_}Partical{\_}DENSITY & Sets the overall density of background particles\\
+    \hline
+    BALLDENSITY & Sets the density of particles making up the balls of particles \\
+    \hline
+    MAKE{\_}A{\_}VACUUM{\_}CIRCLE & Creates a circle of no particles \\
+    \hline
+    Color{\_}Low{\_}Cutoff & Sets the relative density for colour to change from green to yellow \\
+    \hline
+    Color{\_}Med{\_}Cutoff & Sets the relative density for colour to change from yellow to red \\
+    \hline
+  \end{tabular}}
+  \caption{FHP Variable definitions}
+  \label{tab:FHP-large-variables}
+\end{table}
+
+These constants are set in \autoref{fig:W5-large-lattice-var-init}.
+
+\begin{figure}[H] 
+   \centering
+   \includegraphics[width=0.9\columnwidth]{Figures/Week 5/large-lattice/FHP large-lat init.png}
+   \caption{Screenshot of the FHP Large lattice constant definitions}
+   \label{fig:W5-large-lattice-var-init}
+\end{figure}
+
+\autoref{fig:W5-large-lattice-validate} shows code validating that the lattice/window sizes are compatible, if not, outputs valid a lattice-size.
+\begin{figure}[H] 
+   \centering
+   \includegraphics[width=0.9\columnwidth]{Figures/Week 5/large-lattice/FHP large-lat validate.png}
+   \caption{Screenshot of the FHP Large lattice constant validation code}
+   \label{fig:W5-large-lattice-validate}
+\end{figure}
+
+As the maximum number of neighbours depends on user input, the colour multipliers are calculated at runtime to ensure colour values are not $>255$ \autoref{fig:W5-large-lattice-color-multiplier}.
+\begin{figure}[H] 
+   \centering
+   \includegraphics[width=1\columnwidth]{Figures/Week 5/large-lattice/FHP large-lat color multiplier.png}
+   \caption{Screenshot of the FHP Large lattice Colour multipliers calculation code}
+   \label{fig:W5-large-lattice-color-multiplier}
+\end{figure}
+
+These multipliers are used to produce a colour value for each cell, \autoref{fig:W5-large-lattice-colorer}.
+
+\begin{figure}[H] 
+   \centering
+   \includegraphics[width=0.9\columnwidth]{Figures/Week 5/large-lattice/FHP large-lat color calculator.png}
+   \caption{Screenshot of the FHP Large lattice Colour calculation code}
+   \label{fig:W5-large-lattice-colorer}
+\end{figure}
+
+Finally, the simulation can be run, \autoref{fig:W5-large-lattice-before-collision} and \autoref{fig:W5-large-lattice-before-collision} show the simulation before and after the collision. 
+
+\begin{figure}[H] 
+   \centering
+   \includegraphics[width=0.4\columnwidth]{Figures/Week 5/large-lattice/W5-before-collision.png}
+   \caption{Screenshot of the FHP Large lattice, Balls before collision}
+   \label{fig:W5-large-lattice-before-collision}
+\end{figure}
+
+\begin{figure}[H] 
+   \centering
+   \includegraphics[width=0.4\columnwidth]{Figures/Week 5/large-lattice/W5-after-collision.png}
+   \caption{Screenshot of the FHP Large lattice, Balls after collision}
+   \label{fig:W5-large-lattice-after-collision}
+\end{figure}
+
+
+
+
+\subsubsection{Vacuum}
+\autoref{fig:W5-large-lattice-init-vac} shows code which creates a vacuum in the lattice.
+\begin{figure}[H] 
+   \centering
+   \includegraphics[width=0.9\columnwidth]{Figures/Week 5/large-lattice/FHP large-lat make vaccum.png}
+   \caption{Screenshot of the FHP Large lattice code which creates a vacuum}
+   \label{fig:W5-large-lattice-init-vac}
+\end{figure}
+
+\autoref{fig:W5-large-lattice-vac-start} and \autoref{fig:W5-large-lattice-vac-end} shows the surrounding particles converge on the vacuum, causing the vacuum to collapse. 
+
+\begin{figure}[H] 
+   \centering
+   \includegraphics[width=0.49\columnwidth]{Figures/Week 5/large-lattice/W5-vac-before-collision.png}
+   \caption{Screenshot of the FHP Large lattice vacuum sphere simulation before collapse}
+   \label{fig:W5-large-lattice-vac-start}
+\end{figure}
+
+\begin{figure}[H] 
+   \centering
+   \includegraphics[width=0.49\columnwidth]{Figures/Week 5/large-lattice/W5-vac-after-collision.png}
+   \caption{Screenshot of the FHP Large lattice vacuum sphere simulation after collapse}
+   \label{fig:W5-large-lattice-vac-end}
+\end{figure}
 
 
 
 \newpage
 \section{Lab 6 - Excitable Media} 
-\newpage
+Excitable media are a class of systems which propagate waves which form repeating patterns, these waves are by local disturbances and are sustained. Applications for such systems are widespread, a notable example is heart monitoring. These systems do not allow a wave to propagate for a set period of time, this is a 'resting' state.
+
+
 \subsection{3 State CA}
-This lab consisted of simulating excitable media using cellular automata (CA). To begin, a three-state CA was used to simulate waves. The initial spiral wave output is shown in figure \autoref{fig:W6-initial-3CA}.
+A three-state CA was used to simulate repeating waves. The initial spiral wave output is shown in figure \autoref{fig:W6-initial-3CA}.
 
 \begin{figure}[H] 
     \centering
@@ -564,7 +718,7 @@ The Java code was altered to allow for a plane wave simulation. To achieve this,
 
 
 
-For different simulation starting locations, conditional branching was implemented to allow the user to set the starting location and wave type via a variable in the program. A variable called 'startLocation' must be set to '1', '2' or'3' to define the starting location. \autoref{fig:W6-3CA-conditional-logic-code} shows the code implementing this.
+To allow different starting locations, branching was implemented to set the starting location and wave type. Variable 'startLocation' must be set to '1', '2' or'3' to define the starting location. \autoref{fig:W6-3CA-conditional-logic-code} shows the code implementing this.
 
 A similar approach was created to allow the user to define the 'doSpiralWave' variable, allowing the wave type to be altered.
 
@@ -586,16 +740,16 @@ A similar approach was created to allow the user to define the 'doSpiralWave' va
     \label{fig:W6-3CA-start-corner}
 \end{figure}
 
-\autoref{fig:W6-3CA-start-middle} shows the graphical output when 'startLocation=2', starting the simulation in the middle of the grid by setting . 
+\autoref{fig:W6-3CA-start-middle} shows the graphical output when 'startLocation=2', starting the simulation in the centre. 
 \begin{figure}[H] 
     \centering
     \includegraphics[width=0.49\columnwidth]{Figures/Week 6/3stateCA-MIDDLE-output.png}
     \caption{Screenshot of 3-State CA simulation starting in the middle of the grid}
     \label{fig:W6-3CA-start-middle}
 \end{figure}
-\newpage
+
 \subsection{GST}
-Next, a Gerhardt-Schuster-Tyson model was implemented to create a spiral and plane wave. The highlighted nested for loop shown in \autoref{fig:W6-GST-plane-code} was removed to create a plane wave simulation. \autoref{fig:W6-GST-side-by-side-output} shows both spiral (left side) and plane wave (right side) simulation outputs.
+A Gerhardt-Schuster-Tyson model was implemented to create a spiral and plane wave. The highlighted nested for loop shown in \autoref{fig:W6-GST-plane-code} was removed to create a plane wave simulation. \autoref{fig:W6-GST-side-by-side-output} shows both spiral (left side) and plane wave (right side) simulation outputs.
 
 \begin{figure}[H] 
     \centering
@@ -747,10 +901,202 @@ The graphical output for the program is shown in \autoref{fig:W6-4CA-output}.
     \caption{Screenshot of 'fourStateCA' graphical output}
     \label{fig:W6-4CA-output}
 \end{figure}
-\newpage
-\section{Lab 7}
-\newpage
-\section{Lab 8}
-\newpage
-\section{Lab 10}
 
+\newpage
+
+\section{Lab 7 - Lattice Boltzmann Model}
+LBM models are similar to the previously discusses FHP and HPP models, however, it has a greater focus on the statistical mechanics of molecules. The model utilises probability distributions based on Boltzmann's equation \autoref{fig:boltzmann}, in particular, the distribution of individual molecules having a certain position or velocity. Function $f$ gives a continuous range, this differs from the Boolean value used in the FHP model, thus when discretised - the output array should have floating point elements. 
+
+Local density in LBM is the sum of the local velocity states, and local velocity is a weighted average of discrete flow velocities. 
+    \begin{center}
+        \begin{equation}
+           \frac{\partial f}{\partial t} + v \cdot \nabla f + g \cdot \frac{\partial f}{\partial v} = \omega(f)
+            \label{fig:boltzmann}
+        \end{equation}  
+    \end{center}%Equation
+
+\autoref{fig:W10-lbm-5000} shows the flow of fluid quickly causes vortices behind the obstacle when run. 
+
+
+\begin{figure}[H] 
+    \centering
+    \includegraphics[width=0.49\columnwidth]{Figures/Week 7/LBM-Initial-5000-iterations-output.png}
+    \caption{Screenshot of the graphical output LBM 5000 iterations}
+    \label{fig:W10-lbm-5000}
+\end{figure}
+
+Loop unrolling improved performance, the benchmarking results are shown in \autoref{fig:W7-bench-results-table} and \autoref{fig:W7-Graph}.
+
+On average the program ran $111499.3333 / 60259.33333= 1.850324708$ times faster, this is a massive speedup.
+\begin{table}[htbp]
+      \centering
+      \begin{tabular}{|c|c|c|}
+            \hline
+            \textbf{Run Number} &\textbf{Unrolled Loop} & \textbf{Rolled Loop} \\
+            \hline
+            Run 1 & 64319 & 119067 \\
+            \hline
+            Run 2 & 61434 & 101983 \\
+            \hline
+            Run 3 & 55025 & 113448 \\
+            \hline
+            Mean & 60259.33333 & 111499.3333 \\
+            \hline                      
+      \end{tabular}
+      \caption{Lab 10 LBM Benchmarking Results}
+      \label{fig:W7-bench-results-table}
+    \end{table}  
+\begin{figure}[H] 
+    \centering
+    \includegraphics[width=0.9\columnwidth]{Figures/Week 7/graph.png}
+    \caption{LBM unrolled loop results graph}
+    \label{fig:W7-Graph}
+\end{figure}
+
+\autoref{fig:W7-lbm-30000} shows that by iteration 15000 (top) the vortices have left a 'Von Karman vortex street' (VKVS) behind the obstacle and by 30000 (bottom) the trail is well established.
+
+\begin{figure}[H] 
+    \centering
+    \includegraphics[width=0.49\columnwidth]{Figures/Week 7/LBM-Initial-15000-30000-iterations-output.png}
+    \caption{Screenshot of the graphical output LBM 30000 iterations}
+    \label{fig:W7-lbm-30000}
+\end{figure}
+
+
+\autoref{fig:W7-lbm-square-code} shows code implementing a square obstacle, high pressure quickly builds around each vertex before two vortices are created on the rear two vertexes \autoref{fig:W7-lbm-square-sim}  
+\begin{figure}[H] 
+    \centering
+    \includegraphics[width=0.49\columnwidth]{Figures/Week 7/square code.png}
+    \caption{Screenshot of the LMB code implementing square obstacle}
+    \label{fig:W7-lbm-square-code}
+\end{figure}
+\begin{figure}[H] 
+    \centering
+    \includegraphics[width=0.49\columnwidth]{Figures/Week 7/square run.png}
+    \caption{Screenshot of the LMB square obstacle simulation}
+    \label{fig:W7-lbm-square-sim}
+\end{figure}
+\newpage
+\section{Lab 8 - Aerodynamics}
+This lab extends the previous LBM model by altering the boundary conditions. The system implements a no-slip condition, meaning that the fluid that collides with a boundary is assumed to be stationary. The 'bounce-back' scheme has been implemented to 'bounce' particles in the same direction that came from when they collide with a boundary.   
+
+The Reynolds Number is a quantity used to characterise flow, it's used to determine the type of flow in the simulation. 
+\[\mathrm{Re} = \mathbf{|u|}  \mathbf{L} \mathbf{/V}\]
+where $|u|$ is a charactistic of the flow velocity, $L$ is the length of an obstacle and $v$ is viscosity.
+Lower Reynolds values are associated with turbulent flow and high with laminar. 
+
+The obstacle in the simulation is an airfoil. When the first fluid passes the obstacle, a pressure wave is visible propagating through the system \autoref{fig:W8-1}.
+\begin{figure}[H] 
+    \centering
+    \includegraphics[width=0.6\columnwidth]{Figures/Week 8/1.png}
+    \caption{Screenshot of the Airfoil simulation, pressure wave on left}
+    \label{fig:W8-1}
+\end{figure}
+Soon, the fluid reaches the outlet and bounces back. This is seen in q12    W3|sdzX \autoref{fig:W8-bounceback}.
+\begin{figure}[H]   
+    \centering
+    \includegraphics[width=0.49\columnwidth]{Figures/Week 8/bounceback.png}
+    \caption{Screenshot of the LBM Airfoil bounce-back}
+    \label{fig:W8-bounceback}
+\end{figure}
+\autoref{fig:W8-trail} shows as the simulation continues, another VKVS trail is visible, although with lower amplitude oscillations than previously, due to the aerodynamic shape of the Airfoil.
+\begin{figure}[H] 
+    \centering
+    \includegraphics[width=0.49\columnwidth]{Figures/Week 8/trail.png}
+    \caption{Screenshot of the LMB Airfoil trail}
+    \label{fig:W8-trail}
+\end{figure}
+
+\autoref{fig:W8-cli-1} shows the lift and drag values the airfoil experiences are 0.01 and 0.03 respectively.
+\begin{figure}[H] 
+    \centering
+    \includegraphics[width=0.49\columnwidth]{Figures/Week 8/cli.png}
+    \caption{Screenshot of the console output from LBM Airfoil }
+    \label{fig:W8-cli-1}
+\end{figure}
+
+Increasing the Alpha variable to '10' causes the airfoil angle of attack to be greater \autoref{fig:W8-alphga-10}. The increase in drag is small, however, the lift increased to 0.07 - this is a massive increase \autoref{fig:W8-alphga-20}.
+
+\begin{figure}[H] 
+    \centering
+    \includegraphics[width=0.49\columnwidth]{Figures/Week 8/alpha 10 1.png}
+    \caption{Screenshot of the LBM Airfoil high alpha value}
+    \label{fig:W8-alphga-10}
+\end{figure}
+\begin{figure}[H] 
+    \centering
+    \includegraphics[width=0.49\columnwidth]{Figures/Week 8/alpha 10 1.png}
+    \caption{Screenshot of the LBM Airfoil high alpha value}
+    \label{fig:W8-alphga-20}
+\end{figure}
+
+
+Inversely, setting alpha to -10 causes the lift to become negative, this would cause the airfoil to descend. \autoref{fig:W8-alphga-minus-output} shows the simulation and the negative lift in \autoref{fig:W8-alphga-minus-cli}, interestingly, the horizontal drag value isn't impacted. 
+\begin{figure}[H] 
+    \centering
+    \includegraphics[width=0.49\columnwidth]{Figures/Week 8/neg sim.png}
+    \caption{Screenshot of the LBM Airfoil with negative alpha value}
+    \label{fig:W8-alphga-minus-output}
+\end{figure}
+\begin{figure}[H] 
+    \centering
+    \includegraphics[width=0.49\columnwidth]{Figures/Week 8/neg cli.png}
+    \caption{Screenshot of the LBM Airfoil console with negative alpha value }
+    \label{fig:W8-alphga-minus-cli}
+\end{figure}
+
+
+\newpage
+\section{Lab 10 - Differential Equations}
+A Python script which calculates the motion between two bodies with mass and gravitational force. The 'scipy.integrate.solve{\_}ivp' method is used to solve initial value problems using the Runge-Kutta method, here solving for Newton's equations of motion for the bodies. A function 'fun' is passed to the method, it is a system of ordinary differential equations. A function called 'grav' is used in these calculations, it calculates the inverse-square-law between the two particles. \autoref{fig:W10-1} shows the output for the program, an animation of the two particles orbiting each other. Eventually, the orbits begin to decay which is not accurate.
+
+\begin{figure}[H] 
+    \centering
+    \includegraphics[width=0.49\columnwidth]{Figures/Week 10/1.png}
+    \caption{Screenshot of the initial Python Runge-Kutta method output}
+    \label{fig:W10-1}
+\end{figure}
+
+The Leapfrog method was implemented to solve the equations, it is similar to Euler method, except velocities are defined for 1/2 integer steps, the output of this program is shown in \autoref{fig:W10-2}. In this simulation, the orbit does not decay as it did with the Runge-Kutta implementation.
+\begin{figure}[H] 
+    \centering
+    \includegraphics[width=0.49\columnwidth]{Figures/Week 10/2.png}
+    \caption{Screenshot of the Python Leapfrog method output}
+    \label{fig:W10-2}
+\end{figure}
+
+The value of 'dt' was set to 0.1, increasing the step size. This causes the particles to fly out of the simulation \autoref{fig:W10-3} as the orbit grows.
+\begin{figure}[H] 
+    \centering
+    \includegraphics[width=0.49\columnwidth]{Figures/Week 10/3.png}
+    \caption{Screenshot of the Python Leapfrog method dt=0.1}
+    \label{fig:W10-3}
+\end{figure}
+
+When the value is set to 0.005, the program takes twice as long to execute due to the increased number of steps to calculate. The orbit is smaller than it was previously \autoref{fig:W10-4}.
+
+
+\begin{figure}[H] 
+    \centering
+    \includegraphics[width=0.49\columnwidth]{Figures/Week 10/4.png}
+    \caption{Screenshot of the Python Leapfrog method dt=0.005}
+    \label{fig:W10-4}
+\end{figure}
+
+Increasing the initial values of 't'/'tend' causes the speed of the orbit to slow dramatically \autoref{fig:W10-5}.
+\begin{figure}[H] 
+    \centering
+    \includegraphics[width=0.49\columnwidth]{Figures/Week 10/5.png}
+    \caption{Screenshot of the Python Leapfrog method Increased initial values}
+    \label{fig:W10-5}
+\end{figure}
+\newpage
+
+
+
+%\begin{figure}[H] 
+%    \centering
+%    \includegraphics[width=0.49\columnwidth]{Figures/Week 8/}
+%    \caption{Screenshot of the }
+%    \label{fig:W8}
+%\end{figure}

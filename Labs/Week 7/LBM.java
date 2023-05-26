@@ -96,12 +96,9 @@ public class LBM {
         }
 
         // Cylindrical obstacle
-        double r2 = r * r ;
-        for(int i = 0 ; i < NX ; i++) {
-            for(int j = 0 ; j < NY ; j++) {
-                double dx = i - cx ;
-                double dy = j - cy ;
-                obstacle [i] [j] = (dx * dx + dy * dy) < r2 ;
+        for(int i = 50 ; i < 150 ; i++) {
+            for(int j = 50 ; j < 150 ; j++) {
+                obstacle [i] [j] = true;
             }
         }
 

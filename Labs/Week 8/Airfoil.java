@@ -94,7 +94,7 @@ public class Airfoil {
         }
 
         // Airfoil obstacle (r is half chord length)
-        final double ALPHA = 0 ;  // angle of attack in degrees
+        final double ALPHA = -10 ;  // angle of attack in degrees
         double rad = Math.PI * ALPHA / 180 ;
         double cos = Math.cos(rad) ;
         double sin = Math.sin(rad) ;

@@ -14,7 +14,8 @@ public class FHP_Color {
     static boolean [] [] [] fout = new boolean [NX] [NY] [q] ;
 
     public static void main(String args []) throws Exception {
-      //make some noise!
+      
+        //generate some noise!
       for(int i = 0; i < NX ; i++) { 
           for(int j =  0; j < NY ; j++) { 
               boolean [] fin_ij = fin [i] [j] ;
@@ -25,7 +26,7 @@ public class FHP_Color {
               }
           }
        }
-
+       //make a circle
         int centerX = NX / 4;  // X-coordinate of the circle center
         int centerY = NY / 2;  // Y-coordinate of the circle center
         int radius = NX / 8;  // Radius of the circle

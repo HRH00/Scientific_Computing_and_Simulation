@@ -7,18 +7,18 @@ import javax.swing.* ;
 public class FHP_Color_Large_Lattice {
 
     //set these 
-    static int Lattice_Size = 3000; // make multiple ofdisplaySizeX, such that NX / displaySizeX is odd
-    final static int Display_Size = 1000; //Window size Pixels
+    static int Lattice_Size = 2200; // make multiple ofdisplaySizeX, such that NX / displaySizeX is odd
+    final static int Display_Size = 200; //Window size Pixels
 
     //Delay between each iteration
     final static int DELAY = 0 ; //ms
 
     //set partical densitys
-    final static double AMBIENT_Partical_DENSITY = 0;  // initial state, between 0 and 1.0.
-    final static double BALLDENSITY = .7;  // initial state, between 0 and 1.0. 
+    final static double AMBIENT_Partical_DENSITY = 0.7;  // initial state, between 0 and 1.0.
+    final static double BALLDENSITY = 0;  // initial state, between 0 and 1.0. 
 
     //Makes one of the circles a vaccum
-    final static boolean MAKE_A_VACUUM_CIRCLE = false;
+    final static boolean MAKE_A_VACUUM_CIRCLE = true;
 
     final static double Color_Low_Cutoff = 0.3; //must be between 0 and 1, MUST be lower than Color_Med_Cutoff
     final static double Color_Med_Cutoff  = 0.9; //must be between 0 and 1
@@ -377,10 +377,7 @@ public class FHP_Color_Large_Lattice {
                                 };
                             }
                         }
-                    }
-
-
-                    
+                    }                    
                     if(partical_Density <=Cutoff_Low){
                         g.setColor(new Color(0,(int) (partical_Density*Multiplier_Low),0));}
                     else if(partical_Density <=Cutoff_Medium){
