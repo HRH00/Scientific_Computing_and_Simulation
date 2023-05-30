@@ -1,6 +1,4 @@
 \chapter{Lab Report}
-This report section will explore the lab work completed throughout the module and discuss skills learned through reflections on each lab. Evidence that each task has been completed is provided.
-
 \section{Lab 1 Naive Fourier Transform}
 
     The first lab comprised of performing a naive discrete Fourier Transform (DFT) and Inverse DFT on a .pgm image file. The Fourier analysis allows for different filters to be applied to the Image. The original image is shown in Figure \autoref{fig:wolf_image}
@@ -12,7 +10,8 @@ This report section will explore the lab work completed throughout the module an
             \label{fig:wolf_image}
     \end{figure}
     
-    A Fourier analysis is a mathematical technique which decomposes a waveform into its fundamental sinusoidal sub-components, allowing for the waveform to be represented in the frequency domain, as opposed to the spatial domain. These Fourier components represent the frequency, amplitude and phase which make up the original signal. By doing this, Fourier analysis allows image processing (among other signal processes) to be performed. The sum of the sub-components is used to recreate the original waveform. 
+    A Fourier analysis is a mathematical technique which decomposes a waveform into its fundamental sinusoidal sub-components, representing the waveform in the frequency domain, opposed to the spatial domain. These Fourier components represent the frequency, amplitude and phase which make up the original signal. 
+    Fourier analysis allows image processing (among other signal processes) to be performed. The sum of the sub-components is used to recreate the original waveform. 
     
 
     To begin, supporting Java classes were provided, they are: 
@@ -23,9 +22,9 @@ This report section will explore the lab work completed throughout the module an
         \item SimpleFT.java
     \end{itemize}
         
-    'DisplayDensity.java' displays a greyscale image rendered from a 2D array of image data, with smaller values displayed as dark and larger values as light.
+    'DisplayDensity.java' displays a greyscale image rendered from a 2D array.
     
-    'ReadPGM.java' parses the .pgm file for use in the skeleton program and 'Display2dFT.java' allows the Fourier Transform (FT) output to be represented graphically, using colour to represent imaginary number components. 'SimpleFT' is a skeleton program to code in.
+    'ReadPGM.java' parses a .pgm file, 'Display2dFT.java' allows the Fourier Transform (FT) output to be represented graphically, using colour to represent imaginary number components. 'SimpleFT' is a skeleton program to code in.
     
 
     
@@ -39,7 +38,7 @@ This report section will explore the lab work completed throughout the module an
         \end{equation}  
     \end{center}%Equation
 
-    Implementation of the equation is shown in \autoref{fig:wolf-FT-code}. An array called 'X' stored the original .pgm data. The program decomposes the original frequencies into two arrays, this is because the process generates complex numbers. The imaginary component of the complex number is stored in 'CIm' while the real component is stored in 'CRe'. 
+    Implementation of the equation is shown in \autoref{fig:wolf-FT-code}. An array called 'X' stored the original .pgm data. The program decomposes the original frequencies into two arrays, this is because the process generates complex numbers. The imaginary component of the number is stored in 'CIm' while the real component is stored in 'CRe'. 
  
     \begin{figure}[H]
         \centering
@@ -48,7 +47,7 @@ This report section will explore the lab work completed throughout the module an
         \label{fig:wolf-FT-code}
     \end{figure}
 
-    The graphical representation of the Fourier Analysis is shown in \autoref{fig:wolf-DFT}. The 'Display2dFT' class has been used to implement this, the colour of each pixel represents the imaginary component.
+    The graphical representation of the Fourier Analysis is shown in \autoref{fig:wolf-DFT}. 
     
     \begin{figure}[H]
         \centering
@@ -68,8 +67,7 @@ This report section will explore the lab work completed throughout the module an
         \end{equation}  
         \end{center}
         
-    The code of the implementation is shown in \autoref{fig:inverse-DFT-Code}. The reconstructed image array is called 'reconstructed'.  
-    In this code, pixel value normalisation must be performed to set each pixel to a value which the 'DisplayDensity' class can output correctly. 
+    The code of the implementation is shown in \autoref{fig:inverse-DFT-Code}.  Pixel value normalisation is performed to set pixel values to 'DisplayDensity' class can output the image correctly. 
         
         \begin{figure}[H]
             \centering
@@ -104,7 +102,7 @@ This report section will explore the lab work completed throughout the module an
             \label{fig:Testing-Code-output}
         \end{figure}
 
-    \autoref{fig:floating-Point-Fix}, \autoref{fig:floating-Point-Fixed-test} and \autoref{fig:floating-Point-Fixed-CLI-Output} show that in this instance, the error can be completely removed simply by rounding the reconstructed value to the nearest integer.
+    \autoref{fig:floating-Point-Fix}, \autoref{fig:floating-Point-Fixed-test} and \autoref{fig:floating-Point-Fixed-CLI-Output} shows that the error can be completely removed by rounding each reconstructed value to the nearest integer.
     \newpage
     \begin{figure}[H]
         \centering
@@ -128,10 +126,10 @@ This report section will explore the lab work completed throughout the module an
    
     \newpage
     \subsection{Filtering}
-    Now that the data is in the frequency domain, performing filtering operations is simple. 
+    Now that the data is in the frequency domain, performing filtering operations are simple. 
     
     \subsubsection{Low Pass Filter}
-    A low pass filter removes frequencies above a cutoff value allowing low frequencies to pass through. In this instance, the cutoff was set to $N/8$ or $256/8$. \autoref{fig:Low-Pass-Filter-code} show that any values greater than the cutoff are set to $0$. The absolute value of each input value is used to remove the sign from the number, allowing the conditional statements to function correctly. 
+    A low pass filter removes frequencies above a cutoff value allowing low frequencies to pass through. In this instance, the cutoff was set to $N/8$ or $256/8$. \autoref{fig:Low-Pass-Filter-code} shows that any values greater than the cutoff are set to $0$. The absolute value of each input value is used to remove the sign from the number, allowing the conditional statements to function correctly. 
     
     \begin{figure}[H]
         \centering
@@ -195,9 +193,9 @@ This report section will explore the lab work completed throughout the module an
 
 \newpage
 \section{Lab 2 - Fast Fourier Transform}
-This week, a Fast Fourier Transform (FFT) was implemented and benchmarked against the previous FT implementation. 
+This week, an FFT was implemented and benchmarked against the previous FT implementation. 
 
-The time complexity for the original FT is $O(N^2)$, and the time complexity for the FFT is $O(N log N)$, this is a massive speedup. 
+The time complexity for the original FT is $O(N^2)$, and the time complexity for the FFT is $O(N log N)$.
 This is achieved by taking advantage of symmetries which occur in the calculation, reducing the total number of calculations required. These symmetries, or twiddle factors, are coefficients which reoccur on every even or every odd index. It is by reusing the calculated twiddle factors that allow the FT to be completed in less time. This is the approach taken in the  Cooley–Tukey FFT algorithm using recursion to divide the problem.
 
 \subsection{2D FFT Implementation}
@@ -225,7 +223,7 @@ To implement a 2D FFT using the fft1d method from the 'FFT' class, a helper func
 \subsection{Benchmarking}
 
 
-Benchmarking code was added to the FT and FFT programs to compare run times. Each program from Lab 1 had its 'System.out.println' removed to allow for more accurate results, as the method has a large overhead when called. \autoref{fig:bench-code-start} and \autoref{fig:bench-code-end} show the benchmarking code implementation and \autoref{fig:SimpleFT-Bench} shows the console output when run.
+Benchmarking code was added to both programs to compare run times. \autoref{fig:bench-code-start} and \autoref{fig:bench-code-end} show the benchmarking code implementation and \autoref{fig:SimpleFT-Bench} shows the console output when run.
 
 
     \begin{figure}[H] 
@@ -247,7 +245,8 @@ Benchmarking code was added to the FT and FFT programs to compare run times. Eac
         \label{fig:SimpleFT-Bench}
     \end{figure}
 
-    Four programs were run 3 times each, these include two versions of the both naive-FT and FFT - one with no filtering operations and one with a high and low pass filter implemented. The results from the benchmarking is shown in \autoref{tab:W2-bench-results-table}. 
+    Each program was run 3 times the results from the benchmarking is shown in \autoref{tab:W2-bench-results-table}. 
+
     \begin{table}[htbp]
       \centering
       \resizebox{1\columnwidth}{!}{\begin{tabular}{|c|c|c|c|c|}
@@ -274,9 +273,9 @@ Benchmarking code was added to the FT and FFT programs to compare run times. Eac
         \label{fig:W2-Benchmarking-Graph}
     \end{figure}
 
-    In all cases, the FFT outperformed the FT by a large margin. This is illustrated in \autoref{fig:W2-Benchmarking-Graph}, showing that the FFT program has a much fastetr run time than the previous implementation, this remained true for all runs of the programs. Please note, the graph's vertical scale is logarithmic to allow for the short run times to be visible.
+    In all cases, the FFT outperformed the FT by a large margin. This is illustrated in \autoref{fig:W2-Benchmarking-Graph}, showing that the FFT programs has a much faster run time than the previous implementations. 
     
-    The mean average of the three runs is used in the following calculations. The FFT program with no filtering allowed for a speedup of  $315424 / 695 = 53.85$.The programs with filtering allowed for a speedup of $596271 / 905 = 658.86$. In both cases, the programs ran much faster when using the FFT implementation, caused by the efficient divide-and-conquer approach method used by the FFT causes the relatively low time complexity.
+    The mean average of the three runs is used in the following calculations. The FFT program with no filtering allowed for a speedup of  $315424 / 695 = 53.85$.The programs with filtering allowed for a speedup of $596271 / 905 = 658.86$. In both cases, the programs ran much faster when using the FFT implementation.
 
     Overall the FFT is a far better approach than the naive implementation as it can perform an FT in a fraction of the time.
     
@@ -287,7 +286,7 @@ This lab explores the computations required for a CT scanner, an FT and filterin
 
 An RT is similar to an FT, however, it produces a set of line integrals or projections which capture the distribution of linear structures within the image. An RT takes two parameters angle '$\theta$' and offset 'r', where '$\theta$' is the orientation angle of the detector assembly and 'r' is the offset of a single detector to the assembly. The transform differs from an FT as it outputs a set of line integrals that capture the distribution of linear structures within the image, rather than frequency information.
 
-Two classes were supplied, 'DisplaySinogramFT.java' rendered the Sinogram-FT as an image and 'Sinogram.java' contains a skeleton program which includes the initial body slice model. It outputs the initial model and calculated sinogram before outputting a back-projected sinogram. The back-projected image contains very little detail, this is shown on the right side of \autoref{fig:W3-initial-output}. The back-projected sinogram image is simply and inverse RT.
+Two classes were supplied, 'DisplaySinogramFT.java' rendered the Sinogram-FT as an image and 'Sinogram.java' contains a skeleton program which includes the initial body slice model. It outputs the initial model and calculated sinogram before outputting a back-projected sinogram. The back-projected image contains little detail, this is shown on the right side of \autoref{fig:W3-initial-output}. The back-projected sinogram image is simply an inverse RT.
 
 The initial source model is the 'Shepp Logan Phantom' \textcite{6499235}, which is made of a series of ellipses representing different densities. The code performs an RT on the model densities to produce the Sinogram, the inversion of this transform will produce the final image. 
 
@@ -320,7 +319,7 @@ Filtering the sinogram is required to make details more visible in the back-proj
 
 
 \subsection{Applying a Simple Ramp Filter}
-Next, the filter must be applied to the Fourier Transform data. A simple Ramp filter has been implemented. A ramp filter is a type of high-pass filter which reduces low frequencies to decrease blurring. The code is shown in \autoref{fig:W3-ramp-code}. For each element, the code generates a $|K|$ value which is then multiplied by both the real and imaginary numerical components of the Fourier Transform.
+Next, the filter must be applied to the Fourier Transform data. A simple Ramp filter has been implemented. A ramp filter is a high-pass filter which reduces low frequencies to decrease blurring. The code is shown in \autoref{fig:W3-ramp-code}. For each element, the code generates a $|K|$ value which is then multiplied by both the real and imaginary numerical components of the Fourier Transform.
 
 The value of 'kSigned' is set to 'iK' if the value is $iK <= N/2$, otherwise, the value is set to $iK-N$.
 
@@ -359,7 +358,7 @@ To output the filtered back-projected image, a back-projection operation is perf
 
 
 \subsection{Applying a Ramp Filter with Cutoffs}
-The previous filter was altered to make use of a cutoff value, an integer variable 'CUTOFF' was created. This stores the value of: '$N / Value$'. If the '$|K|$' value is greater than this CutOff, the Fourier Component is set to '0'. The code for this implementation is shown in \autoref{fig:W3-filter-with-cutoff-code}.
+The previous filter was altered to make use of a cutoff value, and an integer variable 'CUTOFF' was created. This stores the value of: '$N / Value$'. If the '$|K|$' value is greater than this CutOff, the Fourier Component is set to '0'. The code for this implementation is shown in \autoref{fig:W3-filter-with-cutoff-code}.
 
 \begin{figure}[H] 
     \centering
@@ -416,13 +415,13 @@ Implementation is shown in \autoref{fig:W3-cos-filter-code}.
 
 Radio Interferometry is a technique used in Astrophotography which makes use of multiple radio telescopes spread over a large area to gather data. The data is then processed afterwards to produce an image.
 
-These are sometimes referred to as software telescopes, as they require a great deal of processing to combine signals to produce an image. To produce an image, two or more signals are combined constructively or destructively (depending on their relative phase). These telescopes are spread over a large distance and connected through an interferometric array \textcite{Borcea_2005}, radiowaves emitted by celestial objects are detected and stored for later processing. To 'aim' at an object, time delays are inserted into all the signals causing signals from a single direction to be in phase with each other.
+These are sometimes referred to as software telescopes, they require a great deal of processing to combine signals to produce an image. Two or more signals are combined constructively or destructively (depending on their relative phase) to accomplish this. These telescopes are spread over a large area and connected through an interferometric array \textcite{Borcea_2005}, radiowaves emitted by celestial objects are detected and stored for later processing. To 'aim' at an object, time delays are inserted into all the signals causing signals from a single direction to be in phase with each other.
 
-Visibilities must be calculated to produce an image, visibility is a correlation function between signals arriving in two receivers. To calculate the visibility, the signals are first multiplied together and averaged over a fixed amount of time. This allows the cosine correlator $Rc$ to be obtained. Then a 90\textdegree phase shift is introduced to a single signal, the signals are multiplied and averaged over time to obtain the Sine correlator $Rs$.
+Visibilities must be calculated to produce an image, visibility is a correlation function between signals arriving in two receivers. To calculate the visibility, the signals are first multiplied together and averaged over a fixed amount of time. This allows the cosine correlator $Rc$ to be obtained. A 90\textdegree phase shift is introduced to a signal. The signals are multiplied and averaged over time to obtain the Sine correlator $Rs$.
 
-Finally, the visibility between the antennas is $V =Rc - iRs$
+The visibility between the antennas is $V =Rc - iRs$
 
-The sky intensity is the amount of radiowaves received from a particular direction in the sky. If $l, m$ are direction cosines relating to a position in the sky from a fixed origin, then the sky intensity function of position can be denoted as $I(l,m)$.
+The sky intensity is the amount of radiowaves received from a particular direction in the sky. If $l, m$ are direction cosines relating to a position in the sky from a fixed origin, then the sky intensity function of position is denoted as $I(l,m)$.
 
 If $(u, v)$ are the displacement of two telescopes, then the sky intensity can be calculated using the van Cittert-Zernike \autoref{eq:van-Cittert-Zernike}, this is an FT.
 
@@ -507,7 +506,7 @@ The code was tested to ensure collisions were working using two particles in bot
 
 
 \subsection{FHP}
-An FHP model was implemented, it's more realistic than HPP and provides many more states representing the particle direction. The model is based on the Boltzmann equation which describes the behaviour of dilute gas particles. An FHP class was provided, \autoref{fig:W5-fhp-initial} shows the initial output of the program.
+An FHP model was implemented, it's more realistic than HPP and provides many more states representing the particle direction. An FHP class was provided, \autoref{fig:W5-fhp-initial} shows the initial output of the program.
 
 
 \begin{figure}[H] 
@@ -518,7 +517,7 @@ An FHP model was implemented, it's more realistic than HPP and provides many mor
 \end{figure}
 
 \subsubsection{FPP Colour}
-To make the particle densities clearer, a colouring scheme was implemented to set pixel colour based on particle density. The code implementing the colour setting is shown in \autoref{fig:W5-FHP-Color-code}. The code now counts nearby particles 3 indexes away. Colour intensity correlates with density, the colour changes per \autoref{tab:w5-colour-table}. 
+To make the particle densities clearer, a colouring scheme was implemented to set pixel colour based on particle density. The code implementing the colour setting is shown in \autoref{fig:W5-FHP-Color-code}. The program counts nearby particles 3 indexes away. Colour intensity correlates with density, the colour changes per \autoref{tab:w5-colour-table}. 
 
 \begin{table}[htbp]
   \centering
@@ -699,7 +698,7 @@ A three-state CA was used to simulate repeating waves. The initial spiral wave o
     \label{fig:W6-initial-3CA}
 \end{figure}
 
-The Java code was altered to allow for a plane wave simulation. To achieve this, the nested for loop which breaks the initial wave was removed. To allow the wave to repeat itself, the state of all indices on the bottom half of the 'state' matrix was set to '0'. the code and output of the program are shown in Figures \ref{fig:W6-3CA-plane-code} and \ref{fig:W6-3CA-plane-output}. 
+The Java code was altered to allow for a plane wave simulation. To achieve this, the nested for loop which breaks the initial wave was removed. To allow the wave to repeat itself, the state of all indices on the bottom half of the 'state' matrix was set to '0'. The code and output of the program are shown in Figures \ref{fig:W6-3CA-plane-code} and \ref{fig:W6-3CA-plane-output}. 
 
 
 \begin{figure}[H] 
@@ -992,7 +991,7 @@ The obstacle in the simulation is an airfoil. When the first fluid passes the ob
     \caption{Screenshot of the Airfoil simulation, pressure wave on left}
     \label{fig:W8-1}
 \end{figure}
-Soon, the fluid reaches the outlet and bounces back. This is seen in q12    W3|sdzX \autoref{fig:W8-bounceback}.
+Soon, the fluid reaches the outlet and bounces back. This is seen in \autoref{fig:W8-bounceback}.
 \begin{figure}[H]   
     \centering
     \includegraphics[width=0.49\columnwidth]{Figures/Week 8/bounceback.png}
@@ -1048,7 +1047,7 @@ Inversely, setting alpha to -10 causes the lift to become negative, this would c
 
 \newpage
 \section{Lab 10 - Differential Equations}
-A Python script which calculates the motion between two bodies with mass and gravitational force. The 'scipy.integrate.solve{\_}ivp' method is used to solve initial value problems using the Runge-Kutta method, here solving for Newton's equations of motion for the bodies. A function 'fun' is passed to the method, it is a system of ordinary differential equations. A function called 'grav' is used in these calculations, it calculates the inverse-square-law between the two particles. \autoref{fig:W10-1} shows the output for the program, an animation of the two particles orbiting each other. Eventually, the orbits begin to decay which is not accurate.
+A Python script which calculates the motion between two bodies with mass and gravitational force. The 'scipy.integrate.solve{\_}ivp' method is used to solve initial value problems using the Runge-Kutta method, here solving for Newton's equations of motion for the bodies. A function 'fun' is passed to the method, it is a system of ordinary differential equations. A function called 'grav' is used in these calculations, it calculates the inverse-square-law between the two particles. \autoref{fig:W10-1} shows the output for the program, an animation of the two particles orbiting each other. Eventually, the orbits begin to decay.
 
 \begin{figure}[H] 
     \centering
@@ -1083,7 +1082,7 @@ When the value is set to 0.005, the program takes twice as long to execute due t
     \label{fig:W10-4}
 \end{figure}
 
-Increasing the initial values of 't'/'tend' causes the speed of the orbit to slow dramatically \autoref{fig:W10-5}.
+Increasing the initial values of 't'/'tend' cause the speed of the orbit to slow dramatically \autoref{fig:W10-5}.
 \begin{figure}[H] 
     \centering
     \includegraphics[width=0.49\columnwidth]{Figures/Week 10/5.png}
@@ -1094,9 +1093,3 @@ Increasing the initial values of 't'/'tend' causes the speed of the orbit to slo
 
 
 
-%\begin{figure}[H] 
-%    \centering
-%    \includegraphics[width=0.49\columnwidth]{Figures/Week 8/}
-%    \caption{Screenshot of the }
-%    \label{fig:W8}
-%\end{figure}
